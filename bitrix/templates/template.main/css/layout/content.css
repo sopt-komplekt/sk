@@ -1,0 +1,41 @@
+/* content.css
+ * Стандартные стили контента сайта (таблицы, изображения)
+ *
+ */
+
+.b-content td {
+	vertical-align: top;
+}
+
+.b-table {
+	margin-right: 2px;
+}
+	.b-table table {
+		border-top: 3px solid #0592d0;
+	}
+	.b-table th, .b-table td {
+		padding: 10px;
+		border: 1px solid #d4d4d4;
+		text-align: left;
+		vertical-align: middle;
+		font-size: 13px;
+		color: #000;
+	}
+	.b-table th, .b-table tr:first-child td, .b-table tr:nth-child(odd) {
+		background-color: #e5e5e5;
+	}
+	.b-table .phone {
+		width: 120px;
+	}
+
+.sale_order_full_table a,
+.sale_order_full_table a:visited {
+	text-decoration: none;
+	display: inline-block;
+	border-bottom: 1px solid #ff9600;
+	transition: border-color 0.5s, color 0.5s;
+}
+.sale_order_full_table a:hover {
+	color: #ff9600;
+	border-color: transparent;
+}

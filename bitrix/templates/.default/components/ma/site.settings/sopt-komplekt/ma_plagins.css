@@ -1,0 +1,44 @@
+/*Radio button*/
+
+.ma_custom_radio_button {
+    padding: 0px 0px 0px 20px;
+    position: relative;
+    background: url('img/button.png') no-repeat 0px 2px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+*+html .ma_custom_radio_button {
+    display: inline;
+    zoom: 1;
+}
+
+*html .ma_custom_radio_button {
+    display: inline;
+    zoom: 1;
+}
+
+.ma_custom_radio_button.checked {
+    background-position: 0px -33px;
+}
+
+    .ma_custom_radio_button input {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
+    
+/*Placeholder*/
+
+input.custom-input-placeholder,
+textarea.custom-textarea-placeholder {
+    color: #000;
+}
+
+input.placeholder-color,
+textarea.placeholder-color {
+    color: #ccc;
+}

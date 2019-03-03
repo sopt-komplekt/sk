@@ -1,0 +1,201 @@
+/* font.css
+ * глобальные стили шрифта на всем сайте
+ *
+ */
+
+body {
+	font: 16px/1.54 "Montserrat", "Arial", sans-serif;
+}
+
+a, a:visited { 
+	color: black;
+	text-decoration: underline;
+
+	transition-property: color;
+	transition-duration: 0.5s;
+}
+
+a:hover, a:active {
+	color: blue;
+	text-decoration: underline;
+}
+
+.g-decorated-link, 
+.g-decorated-link:visited {
+	padding: 0;
+	font: inherit;
+	background: none;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	text-decoration: none !important;
+	color: inherit;
+	cursor: pointer;
+
+	transition-property: color;
+	transition-duration: 0.5s;
+}
+
+.g-decorated-link:hover, 
+.g-decorated-link:active {
+	color: #ff9600;
+}
+
+.g-decorated-link span, 
+.g-decorated-link:visited span {
+	border-bottom: 1px solid #ff9600;
+
+	transition-property: border-bottom-color;
+	transition-duration: inherit;
+}
+
+.g-decorated-link:hover span, 
+.g-decorated-link:active span {
+	border-bottom-color: transparent;
+}
+
+.g-decorated-link.active {
+	color: #ff9600;
+}
+
+.g-decorated-link.active span {
+	border-bottom-color: transparent;
+}
+
+.g-dashed-link, 
+.g-dashed-link:visited {
+	position: relative;
+	padding: 0;
+	font: inherit;
+	background: none;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	text-decoration: none !important;
+	color: #565a5c;
+	cursor: pointer;
+	transition-property: color;
+	transition-duration: 0.5s;
+}
+
+.g-dashed-link:hover, 
+.g-dashed-link:active {
+	color: #ff9600;
+}
+
+.g-dashed-link::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: -21px;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-top: 1px solid;
+	border-right: 1px solid;
+	border-color: inherit;
+	margin-top: -7px;
+	-webkit-transform: rotate(135deg);
+	-ms-transform: rotate(135deg);
+	transform: rotate(135deg);
+}
+
+.g-dashed-link.active::after {
+    margin-top: -3px;
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+.g-dashed-link span, 
+.g-dashed-link:visited span {
+	border-bottom: 1px dashed #565a5c;
+	transition-property: border-bottom-color;
+	transition-duration: inherit;
+}
+
+.g-dashed-link:hover span, 
+.g-dashed-link:active span {
+	border-bottom-color: #ff9600;
+}
+
+.g-dashed-link.active {
+	color: #ff9600;
+}
+
+.g-dashed-link.active span {
+	border-bottom-color: transparent;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	margin: 0.4em 0;
+	padding: 0;
+	font-weight: normal;
+	line-height: 1.2;
+}
+
+h1, .h1 {
+	font-size: 40px;
+}
+
+h2, .h2 {
+	font-size: 30px;
+}
+
+h3, .h3 {
+	font-size: 24px;
+	line-height: 1.25;
+}
+
+h4, .h4 {
+	font-size: 20px;
+}
+
+h5, h6, .h5, .h6 {
+	font-size: 18px;
+}
+
+p {
+	margin: 0 0 10px;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+
+ul, ol, li {
+	margin: 0.8em 0;
+}
+
+.ruble {
+	/*position: relative;
+	font-weight: 300;
+	text-transform: uppercase;
+	color: #1d1d1b;*/
+	
+	display: inline-block;
+	width: 12px;
+	height: 15px;
+	margin-bottom: 2px;
+	font-size: 0;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 19.2 25.62'%3E%3Cg%3E%3Cg%3E%3Cpath d='M9.6,0H3.2v14.4H0V16H3.2v3.2H0v1.6H3.2v4.8H4.8v-4.8h5.6v-1.6H4.8V16H9.53s.31,0,.74,0a10.13,10.13,0,0,0,6.64-2.23A7.49,7.49,0,0,0,19.2,8a7.49,7.49,0,0,0-2.29-5.8C14.08-.35,9.71,0,9.6,0Zm6.23,12.61c-2.3,2.11-6.12,1.8-6.23,1.79H4.8V1.62H9.67s3.85-.32,6.16,1.79A6,6,0,0,1,17.6,8a6,6,0,0,1-1.77,4.61Zm0,0'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+	background-position: center;
+	background-size: contain;
+}
+
+.ruble::after {
+	/*content: "";
+	position: absolute;
+	right: 5px;
+	bottom: 3px;
+	left: 0;
+	width: auto;
+	height: 1px;
+	background-color: #1d1d1b;*/
+}
+
+.g-semibold {
+	font-weight: 600;
+}

@@ -1,0 +1,87 @@
+.bx_profile .main-profile-block-date-info{
+	margin: 0 0 15px 0;
+}
+
+.bx_profile .main-profile-form-password-annotation{
+	font-family: Arial, Helvetica,sans-serif;
+	color: grey;
+	font-weight: lighter;
+	font-size: 12px;
+	margin-top: 15px;
+	margin: 0 0 0 0%;
+}
+
+.bx_profile .main-profile-block-date-info, .bx_profile .form-group{
+	overflow-y: hidden;
+}
+@media (min-width: 992px)
+{
+	.text-md-right{
+		text-align: right;
+	}
+
+	.form-group{
+		display: table;
+		width: 100%;
+
+	}
+
+	.main-profile-form-label.text-md-right, input[class*="col-"] {
+		float: none !important;
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	.bx_profile .main-profile-form-label {
+		font-size: 14px;
+		margin-bottom: 7px;
+	}
+}
+
+.bx_profile .main-profile-social-block{
+	margin-top: 40px;
+}
+
+.bx_profile .form-group .form-control{
+	height: 40px;
+}
+
+
+.form-control {
+	display: block;
+	width: 100%;
+	max-width: 700px;
+	border: 1px solid #cacaca;
+	border-radius: 2px;
+	height: 46px;
+	background-color: transparent;
+	padding: 0 13px;
+	font: 14px/1.54 "Montserrat", "Arial", sans-serif;
+	-webkit-transition: border-color ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s;
+	transition: border-color ease-in-out .15s;
+}
+
+.form-control:focus,
+.form-control:hover {
+	border-color: #ff9600;
+	outline: 0;
+}
+
+
+.form-group {
+	margin-bottom: 10px;
+	max-width: 700px;
+}
+
+.main-profile-form-buttons-block {
+	margin: 20px 0 50px 0;
+}
+.bx_profile .g-decorated-link {
+	background-color: transparent;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	margin-left: 10px;
+	font-size: 16px;
+}

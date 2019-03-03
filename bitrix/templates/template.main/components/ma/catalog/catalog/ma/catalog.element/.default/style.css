@@ -1,0 +1,89 @@
+
+.b-catalog-detail {
+	margin-bottom: 30px;
+}
+	.b-catalog-detail_holder-pic {
+		float: left;
+		margin-right: 30px;
+	}
+		.b-catalog-detail_detail-pic {
+			margin-bottom: 20px;
+			padding: 2px;
+			border: 1px solid #CCC;
+		}
+		.b-catalog-detail_more-pic {
+			
+		}
+			.b-catalog-detail_more-pic_item {
+				float: left;
+				margin: 0 10px 10px 0;
+				padding: 2px;
+				border: 1px solid #CCC;	
+			}
+	.b-catalog-detail_holder-prop {
+		overflow: hidden;
+	}
+		.b-catalog-detail_price {
+			margin-bottom: 10px;
+			color: #000;
+			font-size: 14px;
+			font-weight: bold;
+		}
+		.b-catalog-detail_properties {
+			margin-top: 30px;
+		}
+			.b-catalog-detail_properties_item {
+
+			}
+				.b-catalog-detail_properties_item_title {
+
+				}
+				.b-catalog-detail_properties_item_value {
+
+				}
+
+	.b-catalog-detail_detail-text {
+		margin-top: 30px;
+		clear: both;
+	}
+
+	.g-clean {
+		clear: both;
+		font-size:0;
+	  	overflow: hidden;
+	}
+    
+/*Кнопки соцсетей*/
+    
+.b-catalog-detail-social_button {
+    margin-top: 25px;
+}
+    
+    .b-catalog-detail-social_button div.b-catalog-detail-social_button-item,
+    .b-catalog-detail-social_button > div {
+        display: inline-block !important;
+        width: 148px;
+        overflow: hidden;
+        float: left;
+    }
+    .b-catalog-detail-social_button div.item-vk {
+        margin-right: 11px;
+    }
+    
+    .b-catalog-detail-social_button div.item-fb {
+        width: 121px;
+    }
+    
+    .b-catalog-detail-social_button div.item-tw {
+        
+    }
+    
+.b-catalog-detail-gift_elements {
+    margin: 6px 0px;
+}
+
+.item-ya {
+    width: auto !important;
+}
+
+/**/

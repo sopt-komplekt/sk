@@ -1,0 +1,193 @@
+.b-tooltip-yellow {
+	z-index: 1000;
+	text-align: left;
+	border: 1px solid #c7bf93;
+	padding: 3px 7px;
+	min-width: 50px;
+	max-width: 300px;
+	color: #000;
+	background-color: #fff9c9;
+}
+.b-tooltip-yellow .tip-inner {
+	font: normal 11px/1.2 Arial, sans-serif;
+}
+
+@media (min-width: 1200px) {
+	.b-tooltip-yellow .tip-arrow-top {
+		margin-top:-10px;
+		margin-left:6px;
+		top:0;
+		left:0;
+		width:10px;
+		height:10px;
+		background:url(img/tip-yellow_arrows.png) no-repeat;
+	}
+	.b-tooltip-yellow .tip-arrow-right {
+		margin-top:6px;
+		margin-left:0;
+		top:0;
+		left:100%;
+		width:10px;
+		height:10px;
+		background:url(img/tip-yellow_arrows.png) no-repeat -10px 0;
+	}
+	.b-tooltip-yellow .tip-arrow-bottom {
+		margin-top:0;
+		margin-left:6px;
+		top:100%;
+		left:0;
+		width:10px;
+		height:10px;
+		background:url(img/tip-yellow_arrows.png) no-repeat -20px 0;
+	}
+	.b-tooltip-yellow .tip-arrow-left {
+		margin-top:6px;
+		margin-left:-10px;
+		top:0;
+		left:0;
+		width:10px;
+		height:10px;
+		background:url(img/tip-yellow_arrows.png) no-repeat -30px 0;
+	}
+}
+
+.b-tooltip-red {
+	z-index: 1000;
+	text-align: left;
+	border: 1px solid #de9898;
+	padding: 4px 7px;
+	min-width: 50px;
+	max-width: 300px;
+	color: #000;
+	background-color: #fedada;
+}
+.b-tooltip-red .tip-inner {
+	font: normal 11px/1.2 Arial, sans-serif;
+}
+
+@media (min-width: 1200px) {
+	.b-tooltip-red .tip-arrow-top {
+		margin-top:-10px;
+		margin-left:6px;
+		top:0;
+		left:0;
+		width:10px;
+		height:10px;
+		background:url(img/tip-red_arrows.png) no-repeat;
+	}
+	.b-tooltip-red .tip-arrow-right {
+		margin-top:6px;
+		margin-left:0;
+		top:0;
+		left:100%;
+		width:10px;
+		height:10px;
+		background:url(img/tip-red_arrows.png) no-repeat -10px 0;
+	}
+	.b-tooltip-red .tip-arrow-bottom {
+		margin-top:0;
+		margin-left:6px;
+		top:100%;
+		left:0;
+		width:10px;
+		height:10px;
+		background:url(img/tip-red_arrows.png) no-repeat -20px 0;
+	}
+	.b-tooltip-red .tip-arrow-left {
+		margin-top:6px;
+		margin-left:-10px;
+		top:0;
+		left:0;
+		width:10px;
+		height:10px;
+		background:url(img/tip-red_arrows.png) no-repeat -30px 0;
+	}
+}
+
+.b-tooltip-gray {
+	z-index: 1000;
+	text-align: left;
+	min-width: 50px;
+	max-width: 200px;
+	font-size: 16px;
+	line-height: 20px;
+	color: #000000;
+}
+
+.b-tooltip-gray .g-decorated-link {
+	display: inline-block;
+	margin-top: 10px; 
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+@media (min-width: 1320px) {
+	.b-tooltip-gray {
+		max-width: 300px;
+		font-size: 18px;
+		line-height: 24px;
+	}
+}
+
+.b-tooltip-help {
+	z-index:1000;
+	text-align:left;
+	border:1px solid #939393;
+	padding:7px;
+	min-width:50px;
+	max-width:530px;
+	color:#8c3901;
+	background-color:#fef9d9;
+	background-image: url(img/tip-yellow.png); /* bgImageFrameSize >= 10 should work fine */
+	/**
+	 * - If you set a background-image, border/padding/background-color will be ingnored.
+	 *   You can set any padding to .tip-inner instead if you need.
+	 * - If you want a tiled background-image and border/padding for the tip,
+	 *   set the background-image to .tip-inner instead.
+	 */
+}
+.b-tooltip-help .tip-inner {
+	font:bold 13px/18px 'trebuchet ms',arial,helvetica,sans-serif;
+	margin-top:-2px;
+	padding:0 3px 1px 3px;
+}
+
+@media (min-width: 1200px) {
+	/* Configure an arrow image - the script will automatically position it on the correct side of the tip */
+	.b-tooltip-help .tip-arrow-top {
+		margin-top:-7px;
+		margin-left:15px;
+		top:0;
+		left:0;
+		width:16px;
+		height:10px;
+		background:url(img/tip-yellow_arrows2.png) no-repeat -40px 0;
+	}
+	.b-tooltip-help .tip-arrow-right {
+		margin-top:-9px; /* approx. half the height to center it */
+		margin-left:-4px;
+		top:50%;
+		left:100%;
+		width:10px;
+		height:20px;
+		background:url(img/tip-yellow_arrows2.png) no-repeat -16px 0;
+	}
+	.b-tooltip-help .tip-arrow-bottom {
+		margin-top:-6px;
+		margin-left:15px;
+		top:100%;
+		left:0;
+		width:16px;
+		height:13px;
+		background:url(img/tip-yellow_arrows2.png) no-repeat -32px 0;
+	}
+	.b-tooltip-help .tip-arrow-left {
+		margin-top:-9px; /* approx. half the height to center it */
+		margin-left:-6px;
+		top:50%;
+		left:0;
+		width:10px;
+		height:20px;
+		background:url(img/tip-yellow_arrows2.png) no-repeat -48px 0;
+	}
+}

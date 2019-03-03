@@ -1,0 +1,35 @@
+/* holster.css
+ * стили основных блоков сайта, его сетки
+ *
+ */
+
+.l-page {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	min-width: 1200px;
+  	min-height: 100%;
+
+  	overflow: hidden;
+}
+
+.l-wrapper {
+	width: 1200px;
+	margin: 0 auto;
+	padding: 0 15px;
+}
+
+.l-page__header {
+	
+}
+
+.l-page__content {
+	flex-grow: 1;
+	/*margin-bottom: 78px;*/
+	/*margin-bottom: 40px;*/
+	margin-bottom: 60px;
+}
+	
+.l-page__footer {
+	
+}

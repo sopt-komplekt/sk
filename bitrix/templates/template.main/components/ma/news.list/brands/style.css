@@ -1,0 +1,41 @@
+.b-brands__list {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 30px;
+}
+
+.b-brands__item {
+    margin: 0 15px;
+}
+
+/* carousel styles */
+
+.b-brands__list.owl-carousel {
+	padding: 0 45px;
+}
+
+.b-brands__list.owl-carousel .b-brands__item {
+	margin: 0;
+}
+
+.b-brands__list.owl-carousel .b-brands__pic {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 80px;
+	overflow: hidden;
+}
+
+.b-brands__list.owl-carousel .b-brands__pic img {
+	display: inline-block !important;
+	width: auto !important;
+}
+
+.b-brands__list.owl-carousel .owl-nav .owl-prev {
+    left: -7px;
+}
+.b-brands__list.owl-carousel .owl-nav .owl-next {
+    right: -7px;
+}

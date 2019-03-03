@@ -1,0 +1,14 @@
+.b-header__user a.cart{
+    background: url(images/cart_new.png)!important;
+    border: none!important;
+    background-size: contain!important;
+    background-repeat: no-repeat!important;
+    background-repeat-y: no-repeat!important;
+    background-repeat-x: no-repeat!important;
+    border-radius: 0;
+    background-position-y: center!important;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-bottom: 34px;
+    line-height: 24px!important;
+}

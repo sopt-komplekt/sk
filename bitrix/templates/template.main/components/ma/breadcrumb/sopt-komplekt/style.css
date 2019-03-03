@@ -1,0 +1,10 @@
+.b-breadcrumb {
+	margin-bottom: 45px;
+	font-weight: 300;
+	font-size: 13px;
+	line-height: 18px;
+}
+
+.b-breadcrumb__current {
+	color: #ff9600;
+}

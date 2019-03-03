@@ -1,0 +1,40 @@
+/*.b-message {
+	display: block;
+	margin: 1.2em 0;
+	padding: 0.4em 1.0em;
+	background-color: #FFFEEB;
+	border: 1px solid #FFD482;
+} 
+.b-errortext {
+	color: red;
+}
+.b-notetext {
+	color: green;
+}
+	.b-message li {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+*/
+.b-message {
+	display: block;
+	margin: 1.2em 0;
+	padding: 0.4em 1.0em;
+	font-size: 14px;
+	/*border: 1px solid #FFD482;*/
+	border-radius: 2px;
+} 
+.b-errortext {
+	background-color: #F2DEDE;
+	border-color: #F2DEDE;
+	color: #A94442;
+}
+.b-notetext {
+	background-color: #DFF0D8;
+	/*border-color: #D6E9C6;*/
+	color: #3C763D;
+}
+	.b-message li {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
