@@ -1,0 +1,26 @@
+.b-news-detail {
+	
+}
+
+	.b-news-detail_pic {
+		margin-bottom: 20px;
+	}
+
+	.b-news-detail_gallery {
+			
+	}
+		.b-news-detail_gallery_item {
+			display: inline-block;
+			margin: 0 10px 10px 0;
+			padding: 2px;
+			vertical-align: middle;
+			border: 1px solid #CCC;	
+		}
+
+			.b-news-detail_gallery_item img {
+				display: block;
+			}
+
+	.b-news-detail_date {
+		margin-bottom: 15px;
+	}

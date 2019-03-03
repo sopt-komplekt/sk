@@ -1,0 +1,41 @@
+.b-catalog-elements-display {
+    padding: 5px 5px 8px 5px;
+    border: 1px solid #ccc;
+    margin: 5px 0px 20px 0px;
+}
+
+    .b-catalog-elements-display a {
+        display: inline-block;
+        margin: 0px 3px 0px 3px;
+    }
+    
+        .b-catalog-elements-display a.selected {
+            color: #F00;
+            text-decoration: none;
+        }
+
+    .b-catalog-item-sorting,
+    .b-catalog-elements-view,
+    .b-catalog-elements-count,
+    .b-catalog-elements-count_holder {
+        display: inline-block;
+    }
+    
+    .b-catalog-elements-count {
+        position: relative;
+        float: right;
+    }
+    
+        .b-catalog-elements-count_list {
+            position: absolute;
+            top: 19px;
+            right: -6px;
+            background: #EEE;
+            padding: 5px 7px 5px 19px;
+            text-align: right;
+        }
+        
+            .b-catalog-elements-count_list a {
+                margin: 0px;
+            }
+        

@@ -1,0 +1,214 @@
+.b-personal-manager {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 345px;
+    background-color: #3d6bb8;
+    color: #ffffff;
+    -webkit-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    transform: translateX(100%);
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: -webkit-transform 0.3s;
+    -o-transition: transform 0.3s;
+    transition: transform 0.3s;
+    transition: transform 0.3s, -webkit-transform 0.3s;
+}
+
+.b-personal-manager-open {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+}
+
+    .b-personal-manager-title {
+        position: absolute;
+        top: 415px;
+        left: -35px;
+        margin: 0;
+        padding: 0 15px 0 40px;
+        font-size: 14px;
+        line-height: 35px;
+        letter-spacing: 0.04em;
+        background-color: inherit;
+        border-radius: 20px 20px 0 0;
+        color: inherit;
+        -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        -webkit-transform-origin: 0% 0%;
+        -ms-transform-origin: 0% 0%;
+        transform-origin: 0% 0%;
+        cursor: pointer;
+    }
+
+    .b-personal-manager-title::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: -13px;
+        width: 14px;
+        height: 20px;
+        background: transparent url("img/corner-left.png") no-repeat center;
+    }
+
+    .b-personal-manager-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: -13px;
+        width: 14px;
+        height: 20px;
+        background: transparent url("img/corner-right.png") no-repeat center;
+    }
+
+    .b-personal-manager-ico {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        width: 17px;
+        height: 16px;
+        background: transparent url("img/icon.png") no-repeat center;
+    }
+
+    .b-personal-manager-wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        padding: 66px 72px;
+        overflow: auto;
+    }
+
+        .b-personal-manager-item {
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+            .b-personal-manager-image {
+                width: 126px;
+                height: 126px;
+                margin: 0 auto 15px;
+                background: #ffffff;
+                border: 3px solid #ffffff;
+                border-radius: 50%;
+                overflow: hidden;
+            }
+
+            .b-personal-manager-name {
+                margin: 0 0 30px;
+                text-align: center;
+            }
+
+                .b-personal-manager-name b {
+                    display: block;
+                    margin-top: 10px;
+                    font-size: 16px;
+                }
+
+            .b-personal-manager-actions {
+                margin: 0 0 30px;
+            }
+
+                .b-personal-manager-button {
+                    display: inline-block;
+                    width: 100%;
+                    margin: 0 0 13px 0;
+                    padding: 12px 10px;
+                    font: normal 14px/1 "Open Sans", "Arial", sans-serif;
+                    text-align: center;
+                    text-decoration: none !important;
+                    background: #e58826;
+                    background: -webkit-gradient(linear, left top, left bottom, from(#e59626), to(#e57826));
+                    background: -webkit-linear-gradient(#e59626, #e57826);
+                    background: -o-linear-gradient(#e59626, #e57826);
+                    background: linear-gradient(#e59626, #e57826);
+                    border: none;
+                    border-bottom: 2px solid #c36720;
+                    border-radius: 2px;
+                    color: #ffffff !important;
+                }
+
+                .b-personal-manager-button:hover {
+
+                }
+
+                .b-personal-manager-button-highlight {
+                    background: #2bc258;
+                    background: -webkit-gradient(linear, left top, left bottom, from(#2bcf4a), to(#2bb367));
+                    background: -webkit-linear-gradient(#2bcf4a, #2bb367);
+                    background: -o-linear-gradient(#2bcf4a, #2bb367);
+                    background: linear-gradient(#2bcf4a, #2bb367);
+                    border-bottom: 2px solid #259957;
+                }
+                .b-personal-manager-button-highlight:hover {
+
+                }
+
+                .b-personal-manager-button:last-child {
+                    margin-bottom: 0;
+                }
+
+            .b-personal-manager-contacts ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+                .b-personal-manager-contacts li {
+                    margin: 0 0 14px;
+                    padding: 0;
+                }
+
+                    .b-personal-manager-contacts a,
+                    .b-personal-manager-contacts a:visited {
+                        position: relative;
+                        padding-left: 25px;
+                        text-decoration: none;
+                        color: inherit;
+                    }
+
+                    .b-personal-manager-contacts a:hover,
+                    .b-personal-manager-contacts a:active {
+                        text-decoration: none;
+                        color: inherit;
+                    }
+
+                        .b-personal-manager-email::before,
+                        .b-personal-manager-skype::before,
+                        .b-personal-manager-phone::before {
+                            content: "";
+                            position: absolute;
+                            top: 50%;
+                            left: 0;
+                            width: 13px;
+                            height: 13px;
+                            margin-top: -6px;
+                            background: transparent url("img/sprite.png") no-repeat;
+                            opacity: 0.5;
+                            -webkit-transition: opacity 0.3s;
+                            -o-transition: opacity 0.3s;
+                            transition: opacity 0.3s;
+                        }
+
+                        .b-personal-manager-email::before {
+                            height: 11px;
+                            margin-top: -5px;
+                            background-position: -2px -19px;
+                        }
+
+                        .b-personal-manager-skype::before {
+                            background-position: -2px -2px;
+                        }
+
+                        .b-personal-manager-phone::before {
+                            background-position: -19px -2px;
+                        }
+                        
+                        .b-personal-manager-email:hover::before,
+                        .b-personal-manager-skype:hover::before,
+                        .b-personal-manager-phone:hover::before {
+                            opacity: 1;
+                        }

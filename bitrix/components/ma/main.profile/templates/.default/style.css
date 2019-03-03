@@ -1,0 +1,124 @@
+.b-profile-form {
+    margin: 2.0em 0 0 0;
+    font: normal 1.0em/1.2 Arial, sans-serif;
+}
+  
+    .b-profile-form_info {
+        margin-bottom: 2.0em;
+    }
+    .b-profile-form_item {
+        margin: 0 0 15px 0;
+        zoom: 1;
+    }
+    .b-profile-form_item:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+        .b-profile-form_item label {
+            display: block;
+            margin: 0 0 0.3em 0;
+            text-align: left;
+        }
+            .b-profile-form .required {
+                color: red;
+            }
+    .b-profile-form_field {
+        position: relative;
+    }
+        .b-profile-form_checkbox label, .b-profile-form_radio label {
+            display: inline;
+            float: none;
+            width: auto;
+            margin: 0;
+            text-align: left;
+            font-size: 14px;
+        }
+        .b-profile-form_text input, .b-profile-form_date input {
+            width: 350px;
+            height: 27px;
+            margin: 0;
+            padding: 0 8px;
+            background: #f1f1f1;
+            border: 1px solid #d9d9d9;
+            border-top: 1px solid #c0c0c0;
+            font: normal 14px/1.2 Arial, sans-serif;
+        }
+        .b-profile-form_date input {
+            /*width: 170px;*/
+        }
+            .b-profile-form_date .calendar-icon {
+                position: absolute;
+                top: 4px;
+                left: 342px;
+            }
+        .b-profile-form_item .textarea {
+            width: 500px;
+            height: 80px;
+            margin: 0;
+            padding: 6px 8px;
+            background: #f1f1f1;
+            border: 1px solid #d9d9d9;
+            border-top: 1px solid #c0c0c0;
+            font: normal 14px/1.2 Arial, sans-serif;
+        }
+        .b-profile-form_dropdown select {
+            width: 367px;
+            margin-left: 1px;
+            font: normal 16px/1.2 Arial, sans-serif;
+        }
+        
+
+        .b-profile-form_item-hint {
+            display: block;
+            clear: both;
+            padding: 0.4em 0 0 0;
+            color: #979797;
+            font-size: 11px;
+        }
+        .b-profile-form_item-error {
+            display: block;
+            clear: both;
+            margin: 0;
+            padding: 0.4em 0 0 0;
+            color: #dd4b39;
+            font-size: 11px; 
+        }
+        .b-profile-form_error .b-profile-form_text input, .b-profile-form_error .b-profile-form_date input, .b-profile-form_error textarea {
+            border-color: #dd4b39 !important;
+        }
+
+        .b-profile-form_captcha {
+            overflow: hidden;
+        }
+            .b-profile-form_captcha img {
+                float: left;
+                margin-right: 5px;
+            }
+            .b-profile-form_captcha input {
+                float: left;
+                height: 38px;
+                width: 150px;
+                padding: 0 15px;
+                margin: 0;
+                background: #f1f1f1;
+                border: 1px solid #d9d9d9;
+                border-top: 1px solid #c0c0c0;
+                font: normal 20px/1.2 Arial, sans-serif;
+                text-transform: uppercase;
+            }
+
+    .b-profile-form_submit {
+        clear: both;
+    }
+        .b-profile-form_submit input {
+            font: normal 16px/1.2 Arial, sans-serif;
+            cursor: pointer;
+        }
+    .b-profile-form_required-sing {
+        margin-top: 1.2em;
+        margin-left: 310px;
+        font-size: 11px;
+    }

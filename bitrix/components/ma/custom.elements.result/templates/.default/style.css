@@ -1,0 +1,40 @@
+.b-custom-elements-form {
+    width: 300px;
+}
+.b-custom-elements-form_description {
+    margin: 0 0 15px 0;
+}
+.b-custom-elements-form_item {
+    margin: 0 0 10px 0;
+}
+.b-custom-elements-form_label {
+    display: inline-block;
+    margin: 0 0 5px 0;
+    text-align: left;
+}
+.b-custom-elements-form_field input[type="text"] {
+    width: 100%;
+    height: 40px;
+    padding: 0 40px 0 10px;
+    font: inherit;
+    text-align: left;
+    background: #ffffff;
+    border: 1px solid #d5d5d5;
+    border-radius: 0;
+    box-shadow: none;
+    color: #5d5d5d;
+}
+.b-custom-elements-form_submit {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 20px;
+    margin-left: -10px;
+}
+.b-custom-elements-form_submit .g-button {
+    min-width: 72px;
+    margin: 0 0 9px 9px;
+    padding-right: 20px;
+    padding-left: 20px;
+}

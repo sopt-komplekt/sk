@@ -1,0 +1,67 @@
+
+.b-carousel {
+	position: relative;
+	overflow: hidden;
+}
+	.b-carousel_holder {
+		overflow: hidden;
+	}
+		.b-carousel_item {
+			overflow: hidden;
+		}
+		.b-carousel_hor .b-carousel_item {
+			float: left;
+		}
+		.b-carousel_ver .b-carousel_item {
+
+		}
+			.b-carousel_item_pic {
+
+			}
+			
+	.b-carousel_left, .b-carousel_right {
+		position: absolute;
+		z-index: 2;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	.b-carousel_hor .b-carousel_left {
+		top: 50%;
+		left: 10px;
+		background-image: none !important;
+	}
+	.b-carousel_hor .b-carousel_right {
+		top: 50%;
+		right: 10px;
+		background-image: none !important;
+	}
+	.b-carousel_ver .b-carousel_left {
+		top: 10px;
+		background-image: none !important;
+	}
+	.b-carousel_ver .b-carousel_right {
+		bottom: 10px;
+		background-image: none !important;
+	}
+	.b-carousel_nav {
+		position: absolute;
+		left: 15px;
+		bottom: 15px;
+		z-index: 2;
+		text-align: center;
+	}
+		.b-carousel_nav_item {
+			position: relative !important;
+			display: inline-block !important;
+			margin: 0 3px 0 0;
+			width: 12px;
+			height: 12px;
+			overflow: hidden;
+			background-color: #CCC;
+			border-radius: 12px;
+			text-indent: -1000px;
+			cursor: pointer;
+		}
+		.b-carousel_nav .active {
+			background-color: #000;
+		}

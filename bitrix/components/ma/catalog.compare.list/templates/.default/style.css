@@ -1,0 +1,12 @@
+.b-small-compare {
+
+}
+
+.b-small-compare__link {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.b-small-compare__count {
+    color: #f8f8f8;
+}

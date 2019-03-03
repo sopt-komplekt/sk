@@ -1,0 +1,126 @@
+<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+/** @var array $arParams */
+/** @var array $arResult */
+/** @global CMain $APPLICATION */
+/** @global CUser $USER */
+/** @global CDatabase $DB */
+/** @var CBitrixComponentTemplate $this */
+/** @var string $templateName */
+/** @var string $templateFile */
+/** @var string $templateFolder */
+/** @var string $componentPath */
+/** @var CBitrixComponent $component */
+?>
+
+<style>
+.b-mod-title {
+    display: none !important;
+}
+
+.b-content-ajax,
+.m-box-modal {
+    padding: 0 !important;
+}
+
+.b-added-item {
+    max-width: 615px;
+    padding: 20px 30px 25px 25px;
+    background-color: #fff;
+}
+
+.b-added-item_holder {
+	overflow: hidden;
+}
+
+.b-added-item_title.h2 {
+	margin: 0 0 15px;
+	font-size: 22px;
+}
+
+.b-added-item_pic {
+    float: left;
+    width: 112px;
+    margin-top: 5px;
+    margin-right: 20px;
+    text-align: center;
+    border: 1px solid #d2d2d2;
+}
+
+.b-added-item_text {
+    font-size: 16px;
+    line-height: 1.5;
+    overflow: hidden;
+}
+
+.b-added-item_name {
+    margin-bottom: 10px;
+}
+
+.b-added-item_info {
+    margin-bottom: 15px;
+    color: #5f5f5f;
+}
+    
+.b-added-item_buttons .g-button {
+    margin-right: 15px !important;
+}
+
+.b-added-item_buttons .g-close {
+    font-size: 16px;
+    color: #5f5f5f;
+}
+</style>
+
+<script type="text/javascript">
+	try {
+		updateMiniBasket();
+	} catch (e) {
+		console.log(e);
+	}
+	
+	try {
+		BX.onCustomEvent('OnBasketChange');
+	} catch (e) {
+		console.log(e);
+	}
+</script>
+
+<?	
+	$ELEMENT_ID = $_REQUEST['id'];
+
+	if(!empty($ELEMENT_ID)){
+		foreach ($arResult["ITEMS"]["AnDelCanBuy"] as $key => $arItem) {
+			if ($arItem['PRODUCT_ID'] == $ELEMENT_ID) {
+				$arResultElement = $arItem;
+				break;
+			}
+		}
+	}
+
+
+?>
+
+<div class="b-added-item">
+	<div class="b-added-item_title h2">
+		Вы добавили товар в корзину
+	</div>
+	<div class="b-added-item_holder">
+		<? if ($arResultElement['DETAIL_PICTURE_SRC']): ?>
+			<div class="b-added-item_pic">
+				<img src="<?=$arResultElement['DETAIL_PICTURE_SRC']?>" alt="<?=$arResultElement['NAME']?>">
+			</div>
+		<? endif; ?>
+		<div class="b-added-item_text">
+			<div class="b-added-item_name">
+				<?=$arResultElement['NAME']?>
+			</div>
+			<div class="b-added-item_info">
+				<?=GetMessage("SALE_PRD_IN_BASKET")?> <?=count($arResult["ITEMS"]["AnDelCanBuy"])?> <?=getCaseEnding(count($arResult["ITEMS"]["AnDelCanBuy"]))?> на сумму <span class="b-basket-popup_total_value"><?=$arResult["allSum_FORMATED"]?></span>
+			</div>
+			<div class="b-added-item_buttons">
+				<a href="<?=$arParams['BASKET_URL']?>" class="g-button">В корзину</a>
+				<a href="javascript:void(0)" class="g-close arcticmodal-close"><?=GetMessage("CONTINUE_SHOPING")?></a>
+			</div>
+		</div>
+	</div>
+</div>

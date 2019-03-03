@@ -1,0 +1,53 @@
+
+.b-catalog-elements-blocks {
+	margin: 0 0 0 -20px;
+	font-size: 0;
+}
+	.b-catalog-elements-blocks_item {
+		width: 25%;
+		display: inline-block;
+		font-size: 14px;
+		margin: 0 0 20px 0;
+		overflow: hidden;
+		*display: inline;
+	  	zoom: 1;
+	  	vertical-align: top;
+	}
+		.b-catalog-elements-blocks_holder {
+			overflow: hidden;
+			margin-left: 20px;
+		}
+			.b-catalog-elements-blocks_pic {
+ 				display: block;
+ 				font-size: 0;
+ 				text-decoration: none !important;
+ 				outline: none;
+ 				position: relative;
+ 				margin-bottom: 0.8em;
+ 			}
+ 			.b-catalog-elements-blocks_text {
+ 				margin-bottom: 0.8em;
+ 				clear: both;
+ 			}
+ 				.b-catalog-elements-blocks_name {
+ 					margin-bottom: 0.8em;
+ 				}
+ 				.b-catalog-elements-blocks_order {
+ 					
+ 				}
+					.b-catalog-elements-blocks_price {
+						float: left;
+						margin: 0 5px 5px 0;
+						color: #000;
+						font-weight: bold;
+						font-size: 14px;
+					}
+					.b-catalog-elements-blocks_buy {
+
+					}
+
+	.g-clean {
+		clear: both;
+		font-size:0;
+	  	overflow: hidden;
+	}

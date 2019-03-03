@@ -1,0 +1,12 @@
+.b-small-favorite {
+
+}
+
+.b-small-favorite__link {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.b-small-favorite__count {
+    color: #f8f8f8;
+}

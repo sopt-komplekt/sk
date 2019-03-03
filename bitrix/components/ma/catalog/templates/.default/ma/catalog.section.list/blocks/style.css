@@ -1,0 +1,45 @@
+
+.b-catalog-section-blocks {
+	overflow: hidden;
+	margin: 0 0 0 -15px;
+}
+	.b-catalog-section-blocks_item {
+		/*width: 222px;*/
+		display: inline-block;
+		margin: 0 0 20px 15px;
+		overflow: hidden;
+		*display: inline;
+	  	zoom: 1;
+	  	vertical-align: top;
+	}
+		.b-catalog-section-blocks_holder {
+			overflow: hidden;
+		}
+			.b-catalog-section-blocks_image {
+ 				float: left;
+ 				margin-bottom: 0.8em;
+ 				padding: 2px;
+				border: 1px solid #CCC;
+ 			}
+ 			.b-catalog-section-blocks_no-image {
+ 				float: left;
+ 				width: 218px;
+ 				height: 170px;
+ 				margin-bottom: 0.8em;
+ 				background: #FFF url(img/no-image_220x170.png) 50% 50% no-repeat;
+				border: 1px solid #CCC;
+ 			}
+ 				.b-catalog-section-blocks_no-image a {
+ 					display: block;
+ 					width: 220px;
+ 					height: 170px;
+ 					overflow: hidden;
+ 					text-indent: -1000px;
+ 				}
+ 			.b-catalog-section-blocks_text {
+ 				margin-bottom: 0.8em;
+ 				clear: both;
+ 			}
+ 				.b-catalog-section-blocks_name {
+ 					margin-bottom: 0.8em;
+ 				}

@@ -1,0 +1,26 @@
+.b-transactions {
+	margin-top: 16px;
+}
+	.b-transactions table {
+		width: 100%;
+	}
+		.b-transactions tr {
+
+		}
+			.b-transactions thead td {
+				background: #EEE;
+				border-bottom: 1px solid #e1e1e1;
+				border-top: 1px solid #e1e1e1;
+			}
+			.b-transactions td {
+				padding: 8px 10px;
+			}
+			.b-transactions td:first-child {
+				width: 1%;
+			}
+			.b-transactions-debit td {
+				background: rgba(0, 255, 0, .1);
+			}
+			.b-transactions-credit td {
+				background: rgba(255, 0, 0, .1);
+			}

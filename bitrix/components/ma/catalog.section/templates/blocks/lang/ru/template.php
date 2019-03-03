@@ -1,0 +1,28 @@
+<?
+$MESS ['CATALOG_BUY'] = "Купить";
+$MESS ['CATALOG_ADD'] = "В корзину";
+
+$MESS ['CATALOG_ADD_TO_BASKET'] = "В корзину";
+$MESS ['CATALOG_IN_BASKET'] = "Уже в корзине";
+$MESS ['CATALOG_PRICE'] = "Цена:";
+
+$MESS ['CATALOG_COMPARE'] = "Сравнить";
+
+$MESS ['CATALOG_NOT_AVAILABLE'] = "Нет в наличии";
+$MESS ['CATALOG_QUANTITY'] = "Количество";
+$MESS ['CATALOG_QUANTITY_FROM_TO'] = "От #FROM# до #TO#";
+$MESS ['CATALOG_QUANTITY_FROM'] = "От #FROM#";
+$MESS ['CATALOG_QUANTITY_TO'] = "До #TO#";
+$MESS ['CT_BCS_QUANTITY'] = "Количество";
+$MESS ['CATALOG_IN_CART'] = "Уже в корзине";
+$MESS ['CATALOG_IN_CART_DELAY'] = "Уже отложен";
+$MESS ['CATALOG_IN_COMPARE'] = "В списке сравнения";
+$MESS ['CATALOG_ELEMENT_DELETE_CONFIRM'] = 'Вы уверены, что хотите удалить этот товар?';
+
+// Избранное
+$MESS ['CATALOG_ADD_TO_FAVORITE'] = "В избранное";
+$MESS ['CATALOG_ADD_TO_FAVORITE_TITLE'] = "Добавить в избранное";
+$MESS ['CATALOG_ADD_TO_FAVORITE_TEXT'] = "В избранное";
+$MESS ['CATALOG_REMOVE_FROM_FAVORITE_TITLE'] = "Удалить из избранного";
+$MESS ['CATALOG_REMOVE_FROM_FAVORITE_TEXT'] = "В избранном";
+?>

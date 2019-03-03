@@ -1,0 +1,22 @@
+.b-news-list {
+	margin: 0 0 0 -20px;
+	font-size: 0;
+}
+	.b-news-list_item {
+		display: inline-block;
+		width: 50%;
+		margin: 0 0 20px 0;
+		font-size: 14px;
+		vertical-align: top;
+	}
+		.b-news-list_holder {
+			margin-left: 20px;
+			overflow: hidden;
+		}
+			.b-news-list_pic {
+				margin: 0 0 10px 0;
+			}
+
+			.b-news-list_title {
+				margin-bottom: 10px;
+			}

@@ -1,0 +1,21 @@
+
+.b-section-list {
+
+}
+	.b-section-list_title {
+		font-size: 18px;
+		line-height: 1;
+		margin-bottom: 10px;
+	}
+	.b-section-list ul {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+	}
+		.b-section-list ul li {
+			display: block;
+			margin-bottom: 8px;
+		}
+			.b-section-list ul li a {
+
+			}

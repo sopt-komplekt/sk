@@ -1,0 +1,109 @@
+.b-location a {
+	position: relative;
+}
+
+.b-location {
+	width: 700px;
+}
+
+	.b-location-holder {
+		padding: 20px 30px 10px;
+	}
+
+		.b-location-section {
+			margin-bottom: 10px;
+		}
+
+			.b-location-section h2 {
+				margin: 0 0 20px;
+				font-size: 24px;
+			}
+
+			.b-location-section h3 {
+				margin: 0 0 20px;
+				font-size: 20px;
+			}
+
+			.b-location-favorite {
+
+			}
+
+				.b-location-favorite ul {
+					margin: 0;
+					padding: 0;
+					list-style: none;
+					font-size: 0;
+				}
+
+					.b-location-favorite li {
+						display: inline-block;
+						//width: 33%;
+						margin: 0 20px 15px 0;
+						padding: 0;
+						/*padding: 0 0 0 25px;*/
+						font-size: 16px;
+						vertical-align: top;
+					}
+
+						.b-location-favorite a,
+						.b-location-favorite a:visited {
+							position: relative;
+							display: inline-block;
+							margin-right: 15px;
+						}
+
+
+
+			.b-location-search {
+				margin-bottom: 20px;
+			}
+				.b-location-search input[type="text"] {
+					width: 100%; 
+					height: 40px;
+					box-sizing: border-box;
+					font: inherit;
+					padding: 7px 15px;
+					border: 1px solid #CCC; 
+					border-radius: 0;
+					background: none; 
+				}
+
+			.b-location-list {
+				padding: 0;
+			}
+
+				.b-location-list ul {
+					height: 0px;
+					max-height: 200px;
+					margin: 0;
+					padding: 0;
+					list-style: none;
+					font-size: 0;
+					overflow: auto;
+
+					transition: height 0.3s
+				}
+
+				.b-location-list.searched ul {
+					height: 125px;
+					transition: height 0.3s
+				}
+
+					.b-location-list li {
+						display: none;
+						width: 33%;
+						margin: 0 0 4px 0;
+						padding: 0;
+						font-size: 14px;
+						line-height: 1.5;
+						vertical-align: top;
+					}
+
+					.b-location-list li.visible {
+						display: inline-block;
+					}
+
+						.b-location-list a {
+							display: inline-block;
+							margin-right: 20px;
+						}

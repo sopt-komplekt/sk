@@ -1,0 +1,24 @@
+.b-socials {
+	margin: 10px 0;
+}
+
+.b-socials__title {
+	margin-bottom: 10px;
+	font-size: 16px;
+}
+
+.b-socials__items {
+	font-size: 0;
+}
+
+.b-socials__link {
+	display: inline-block;
+	margin: 0 5px 5px 0;
+	text-decoration: none;
+	vertical-align: middle;
+	opacity: 0.5;
+}
+
+.b-socials__link:hover {
+	opacity: 1;
+}

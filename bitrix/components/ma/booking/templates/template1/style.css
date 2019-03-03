@@ -1,0 +1,195 @@
+.b-message-form {
+    margin: 2.0em 0 0 0;
+    font: normal 1.0em/1.2 Arial, sans-serif;
+}
+  
+    .b-message-form_info {
+        margin-bottom: 2.0em;
+    }
+    .b-message-form_item {
+        position: relative;
+        margin: 0 0 15px 0;
+        zoom: 1;
+    }
+    .b-message-form_item:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+        .b-message-form_item label {
+            display: block;
+            margin: 0 0 0.3em 0;
+            text-align: left;
+        }
+            .b-message-form_item label .required {
+                color: #CC0000;
+            }
+        .b-message-form_item_text label, .b-message-form_item_textarea label {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            z-index: 2;
+        }
+    .b-message-form_field {
+        position: relative;
+    }
+        .b-message-form_checkbox label, .b-message-form_radio label {
+            display: inline;
+            float: none;
+            width: auto;
+            margin: 0;
+            text-align: left;
+            font-size: 14px;
+        }
+        .b-message-form_text input, .b-message-form_date input {
+            width: 520px;
+            height: 27px;
+            margin: 0;
+            padding: 5px 15px;
+            background: #FFF;
+            border: 1px solid #efefef;
+            font: normal 14px/1.2 Arial, sans-serif;
+        }
+        .b-message-form_date input {
+            /*width: 170px;*/
+        }
+            .b-message-form_date .calendar-icon {
+                position: absolute;
+                top: 4px;
+                left: 342px;
+            }
+        .b-message-form_item .textarea {
+            width: 520px;
+            height: 105px;
+            margin: 0;
+            padding: 5px 15px;
+            background: #FFF;
+            border: 1px solid #efefef;
+            font: normal 14px/1.2 Arial, sans-serif;
+        }
+        .b-message-form_dropdown select {
+            width: 367px;
+            margin-left: 1px;
+            font: normal 16px/1.2 Arial, sans-serif;
+        }
+        
+
+        .b-message-form_item-hint {
+            display: block;
+            clear: both;
+            padding: 0.4em 0 0 0;
+            color: #979797;
+            font-size: 11px;
+        }
+        .b-message-form_item-error {
+            display: block;
+            clear: both;
+            margin: 0;
+            padding: 0.4em 0 0 0;
+            color: #dd4b39;
+            font-size: 11px; 
+        }
+        .b-message-form_error .b-message-form_text input, .b-message-form_error .b-message-form_date input, .b-message-form_error textarea {
+            border-color: #dd4b39 !important;
+        }
+
+         .b-captcha {
+            float: left;
+            margin: -5px 0 0 -5px; 
+        }
+            .b-captcha_item {
+                float: left;
+                padding: 8px;
+            }
+            .b-captcha_selected {
+                padding: 5px;
+                border: 3px solid red;
+            }
+                .b-captcha_item span {
+                    display: block;
+                    width: 25px;
+                    height: 25px;
+                    overflow: hidden;
+                    text-indent: -5000px;
+                }
+
+                .b-grahic-captcha .b-captcha_item span {
+                    display: block;
+                    width: 30px;
+                    height: 30px;
+                    overflow: hidden;
+                    text-indent: -5000px;
+                    background-image: url('img/shape.png');
+                }
+                .b-grahic-captcha .square {
+                    background-position: 0 0;
+                }
+                .b-grahic-captcha .rectangle {
+                    background-position: -30px 0;
+                }
+                .b-grahic-captcha .triangle {
+                    background-position: -60px 0;
+                }
+                .b-grahic-captcha .round {
+                    background-position: -90px 0;
+                }
+                .b-grahic-captcha .polyhedron {
+                    background-position: -120px 0;
+                }
+                .b-grahic-captcha .trapeze {
+                    background-position: -150px 0;
+                }
+                .b-grahic-captcha .rhombus {
+                    background-position: -180px 0;
+                }
+                .b-grahic-captcha .oval {
+                    background-position: -210px 0;
+                }
+                .b-grahic-captcha .star {
+                    background-position: -240px 0;
+                }
+                
+        .b-captcha-text {
+            position: relative;
+            float: left;
+            height: 24px;
+            margin: 3px 0 0 15px;
+            padding: 0 10px;
+            line-height: 25px;
+            background-color: #f2efda;
+            background-color: #fff9c9;
+            border: 1px solid #c7bf93;
+        }
+            .b-captcha-text_corner {
+                position: absolute;
+                margin-top: 7px;
+                margin-left: -10px;
+                top: 0;
+                left: 0;
+                width: 10px;
+                height: 10px;
+                overflow: hidden;
+                background: url(img/tip-yellow_arrows.png) no-repeat -30px 0;
+            }
+            .b-color-captcha-text label {
+                color: #000;
+                font-size: 12px;
+            }
+    .b-hidden-captcha {
+        display: none;
+    }
+
+    .b-message-form_submit {
+        clear: both;
+    }
+        .b-message-form_submit input {
+            font: normal 16px/1.2 Arial, sans-serif;
+            cursor: pointer;
+        }
+    .b-message-form_required-sing {
+        margin-top: 1.2em;
+        margin-left: 310px;
+        font-size: 11px;
+    }
