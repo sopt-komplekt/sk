@@ -71,6 +71,14 @@ if ($arParams['SHOW_CONTACT_PAGE'] === 'Y') {
 	);
 }
 
+//Добавляем вкладку юр.лиц
+    $arAvailablePages[] = array(
+        "PATH" => "/personal/b2b/",
+        "NAME" => Loc::getMessage("SPS_B2B_PAGE_NAME"),
+        "ICON" => '<svg width="36" height="36"><use xlink:href="#icon-person"></use></svg>'
+    );
+
+
 /* Выход */
 $arAvailablePages[] = array(
 	"PATH" => '/?logout=Y',

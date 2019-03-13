@@ -142,22 +142,25 @@
 							<span class="personal-text">Войти</span>
 						</a>
 					<? else: ?>
-						<a class="b-header__user-item personal" href="/personal/" title="Личный кабинет">Личный кабинет</a>
 
-						<? if ($USER->IsAdmin()): ?>
-							<div class="b-header__user-item user-info">
-								<span><?=$USER->GetFullName();?></span>
-								<?
-									 $rsUser = CUser::GetByID($USER->GetID());
-									 $arUser = $rsUser->Fetch();
-								?>
-								<?/* if ($arUser["WORK_COMPANY"]): ?> 
-									<span>
-										<?=$arUser["WORK_COMPANY"];?>	
-									</span>
-								<? endif; */?>
-							</div>
-						<? endif; ?>
+                            <a class="b-header__user-item personal" href="/personal/" title="Личный кабинет">Личный кабинет</a>
+
+                            <? //if ($USER->IsAdmin()): ?>
+                                <div class="b-header__user-item user-info">
+                                    <?
+                                    $rsUser = CUser::GetByID($USER->GetID());
+                                    $arUser = $rsUser->Fetch();
+                                    ?>
+                                    <? if ($arUser["WORK_COMPANY"]): ?>
+                                        <span>
+                                            <?=$arUser["WORK_COMPANY"];?>
+                                        </span>
+                                    <? endif; ?>
+                                    <? if (!$arUser["WORK_COMPANY"]): ?>
+                                    <span><?=$USER->GetFullName();?></span>
+                                    <? endif; ?>
+                                </div>
+                            <? //endif; ?>
 					<? endif; ?>
 					<div class="b-header__user-item">
 						<? include($_SERVER["DOCUMENT_ROOT"].SITE_TEMPLATE_PATH."/include/header/cart.php"); ?>
@@ -349,3 +352,4 @@
 						<h1><? $APPLICATION->ShowTitle(false) ?></h1>
 					</div>
 				<? endif ?>
+

@@ -1,0 +1,13 @@
+.b-header__user-item.user-yul{
+    position: absolute;
+    width: 700px;
+    background: #2b2828;
+    padding: 15px;
+    top: 40px;
+    left: -55px;
+    display:none;
+}
+
+.b-header__user.is-auth .b-header__user-item.personal:hover ~ .b-header__user-item.user-yul{
+    display:block;
+}

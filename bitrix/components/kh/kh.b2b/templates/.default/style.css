@@ -1,0 +1,22 @@
+button[data-target='#new_yulick'], button.new_yulick_button{
+    background: #ff9600;
+    border: #ff9600;
+    padding: 10px 15px;
+    border-radius: 15px;
+}
+
+.text-red{
+    color:red;
+}
+
+.user-yul_accordion_authorize{
+    float: right;
+    color: #ff9600;
+    cursor: pointer;
+}
+
+.phys_face_authorize{
+    color:#ff9600;
+    font-style: italic;
+    cursor: pointer;
+}

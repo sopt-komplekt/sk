@@ -86,6 +86,7 @@ if ($arParams['SHOW_CONTACT_PAGE'] === 'Y')
 	);
 }
 
+
 $customPagesList = CUtil::JsObjectToPhp($arParams['~CUSTOM_PAGES']);
 if ($customPagesList)
 {
