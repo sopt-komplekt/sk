@@ -17,3 +17,4 @@
 /bitrix/tmp/
 /bitrix/tools/messageservice/callback_smsastby.php
 /bitrix/wizards/
+/bitrix/.settings.php
