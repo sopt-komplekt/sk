@@ -207,7 +207,7 @@
 
 			this.list = list.split('&').map(function (item) {
 				var p = item.split('=');
-				return {name: p[0], value: p[1]};
+				return {name: p[0], value: p[1] || ''};
 			}, this);
 
 			return this.list;

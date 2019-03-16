@@ -1,0 +1,10 @@
+<?
+$arResult['SHOW_FIELDS'] = array(
+	'USER_NAME',
+	'USER_LAST_NAME',
+	'LOGIN',
+	'PASSWORD',
+	'CONFIRM_PASSWORD',
+	'EMAIL',
+	'PERSONAL_PHONE'
+);

@@ -7224,12 +7224,6 @@ a.product-unavailable:hover{
 .adm-workarea-sender {
     padding: 6px 20px 0 20px;
 }
-#slam-counters{
-    background: url( "icons/slam.counters/counters.png" ) no-repeat center;
-}
-.slam-counters{
-    background: url( "icons/slam.counters/counters.png" ) no-repeat center;
-}
 /*Menu icon*/
 #sonet_menu_icon {background-image:url(icons/socialnetwork/mnu_socialnetwork.gif);}
 #sonet_page_icon {background-image:url(icons/socialnetwork/page_socialnetwork.gif);}

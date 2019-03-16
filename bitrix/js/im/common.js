@@ -1476,18 +1476,92 @@
 
 	MessengerCommon.prototype.getLogTrackingParams = function(params)
 	{
-		var result = '';
-
-		try
+		if (typeof params !== 'object' || !params)
 		{
-			result = BX.Messenger.Utils.getLogTrackingParams(params);
-		}
-		catch(e)
-		{
-			result = params.name;
+			params = {};
 		}
 
-		return result;
+		var name = params.name || 'tracking';
+		var data = params.data || [];
+		var dialog = params.dialog || null;
+		var message = params.message || null;
+		var files = params.files || null;
+
+		var result = [];
+
+		name = encodeURIComponent(name);
+
+		if (
+			data
+			&& !BX.type.isArray(data)
+			&& typeof data === 'object'
+		)
+		{
+			var dataArray = [];
+			for (var id in data)
+			{
+				if (data.hasOwnProperty(id))
+				{
+					dataArray.push(encodeURIComponent(id)+"="+encodeURIComponent(data[id]));
+				}
+			}
+			data = dataArray;
+		}
+		else if (!BX.type.isArray(data))
+		{
+			data = [];
+		}
+
+		if (dialog)
+		{
+			result.push('timType='+dialog.type);
+
+			if (dialog.type === 'lines')
+			{
+				result.push('timLinesType='+dialog.entityId.split('|')[0]);
+			}
+		}
+
+		if (files)
+		{
+			var type = 'file';
+			if (BX.type.isArray(files) && files[0])
+			{
+				type = files[0].type;
+			}
+			else
+			{
+				type = files.type;
+			}
+			result.push('timMessageType='+type);
+		}
+		else if (message)
+		{
+			result.push('timMessageType=text');
+		}
+
+		if (navigator.userAgent && navigator.userAgent.toLowerCase().indexOf('bitrixmobile') > -1)
+		{
+			result.push('timDevice=bitrixMobile');
+		}
+		else if (navigator.userAgent && navigator.userAgent.toLowerCase().indexOf('bitrixdesktop') > -1)
+		{
+			result.push('timDevice=bitrixDesktop');
+		}
+		else if (
+			navigator.userAgent.toLowerCase().indexOf('iphone') > -1
+			|| navigator.userAgent.toLowerCase().indexOf('ipad') > -1
+			|| navigator.userAgent.toLowerCase().indexOf('android') > -1
+		)
+		{
+			result.push('timDevice=mobile');
+		}
+		else
+		{
+			result.push('timDevice=web');
+		}
+
+		return name + (data.length? '&'+data.join('&'): '') + (result.length? '&'+result.join('&'): '');
 	}
 
 	MessengerCommon.prototype.getDialogDataForTracking = function(dialogId)

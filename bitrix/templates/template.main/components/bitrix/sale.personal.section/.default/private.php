@@ -14,23 +14,26 @@ if ($arParams['SET_TITLE'] == 'Y')
 }
 
 ?>
-<?/* if (!empty($_REQUEST["register"])): ?>
+<? if (!empty($_REQUEST["register"])): ?>
 	<?$APPLICATION->IncludeComponent( 
-	   "bitrix:main.register", 
+	   "ma:main.register", 
 	   "", 
 	   Array( 
 	      "USER_PROPERTY_NAME" => "", 
 	      "SEF_MODE" => "N", 
-	      "SHOW_FIELDS" => Array(), 
-	      "REQUIRED_FIELDS" => Array(), 
+	      // "SHOW_FIELDS" => Array("USER_NAME", "USER_LAST_NAME", "USER_LOGIN", "USER_PASSWORD", "USER_CONFIRM_PASSWORD", "USER_EMAIL", "PERSONAL_PHONE"), 
+	      "SHOW_FIELDS" => Array("USER_NAME", "USER_LAST_NAME", "PERSONAL_PHONE"), 
+	      // "REQUIRED_FIELDS" => Array("USER_LOGIN", "USER_PASSWORD", "USER_CONFIRM_PASSWORD", "USER_EMAIL", "PERSONAL_PHONE"), 
+	      "REQUIRED_FIELDS" => Array("PERSONAL_PHONE"), 
 	      "AUTH" => "Y", 
 	      "USE_BACKURL" => "Y", 
-	      "SUCCESS_PAGE" => $APPLICATION->GetCurPageParam('',array('backurl')), 
+	      "SUCCESS_PAGE" => $APPLICATION->GetCurPageParam('',array('backurl', 'register')), 
 	      "SET_TITLE" => "N", 
 	      "USER_PROPERTY" => Array() 
-	   ) 
+	   ),
+	   $component
 	);?>
-<? else: */?>
+<? else: ?>
 	<?$APPLICATION->IncludeComponent(
 		"bitrix:main.profile",
 		"",
@@ -42,4 +45,4 @@ if ($arParams['SET_TITLE'] == 'Y')
 		),
 		$component
 	);?>
-<?// endif; ?>
+<? endif; ?>

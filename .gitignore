@@ -1,5 +1,10 @@
 /backup.zip
 /bitrix/cache
+/bitrix/admin
+/bitrix/backup
+/bitrix/blocks/
+/bitrix/components/bitrix/
+/bitrix/modules/
 /bitrix/managed_cache
 /bitrix/stack_cache
 /bitrix/html_pages
@@ -7,3 +12,8 @@
 /bitrix/php_interface/dbconn.php
 /upload
 /awstats
+/bitrix/site_checker_2160552f19effc917a0c70dd6b4b08dc.log
+/bitrix/sounds/
+/bitrix/tmp/
+/bitrix/tools/messageservice/callback_smsastby.php
+/bitrix/wizards/

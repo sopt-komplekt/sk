@@ -14,11 +14,13 @@
 		"JQUERY_VERSION" => "2.1",
 		"USE_MA_PLAGINS" => "N",
 		"USE_FANCYBOX" => "N",
-		"USE_MASKEDINPUT" => "N",
+		"USE_MASKEDINPUT" => "Y",
 		"USE_POSHYTIP" => "Y",
 		"USE_BOOTSTRAP" => "N",
 		"MODAL_FORM" => "Y",
-		"MODAL_FORM_DESKTOP" => "N"
+		"MODAL_FORM_DESKTOP" => "N",
+		"COMPOSITE_FRAME_MODE" => "A",
+		"COMPOSITE_FRAME_TYPE" => "AUTO"
 	),
 	false
 );?>

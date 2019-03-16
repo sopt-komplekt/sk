@@ -88,7 +88,7 @@ use Bitrix\Main\Localization\Loc;
 			<div class="form-group">
 				<label class="main-profile-form-label col-sm-12 col-md-12" for="main-profile-email"><?=Loc::getMessage('PHONE')?></label>
 				<div class="col-sm-12">
-					<input class="form-control" type="text" name="PERSONAL_PHONE" maxlength="50" id="main-profile-email" value="<?=$arResult["arUser"]["PERSONAL_PHONE"]?>" />
+					<input class="form-control" type="text" name="PERSONAL_PHONE" maxlength="50" id="main-profile-phone" value="<?=$arResult["arUser"]["PERSONAL_PHONE"]?>" />
 				</div>
 			</div>
 			<?
@@ -125,3 +125,6 @@ use Bitrix\Main\Localization\Loc;
 	</form>
 	<div class="clearfix"></div>
 </div>
+<script>
+	$('#main-profile-phone').mask('+7 (999) 999-99-99');
+</script>
