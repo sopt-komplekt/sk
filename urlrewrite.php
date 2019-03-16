@@ -16,7 +16,7 @@ $arUrlRewrite=array (
     'PATH' => '/personal/order/index.php',
     'SORT' => 100,
   ),
-  12 => 
+  16 => 
   array (
     'CONDITION' => '#^/personal/#',
     'RULE' => '',
