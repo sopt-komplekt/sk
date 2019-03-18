@@ -10,7 +10,7 @@ error_reporting('E_ALL');
 
 <?$APPLICATION->IncludeComponent(
     "kh:kh.b2b",
-    "",
+    "dadata",
     array(),
     false
 );?>
