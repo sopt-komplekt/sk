@@ -55,7 +55,11 @@ $(document).ready(function(){
             url: "/personal/b2b/ajax_dadata.php",
             data: {'INN': inn_val, 'dadata':"YES"},
             success: function(res) {
-                console.log(res);
+                res = JSON.parse(res);
+                if(res.STATUS == 'success'){
+                    $("#new_yulick").addClass("show");
+                }
+                console.log(res.STATUS);
             },
             error: function(err){
                 console.log(err);

@@ -27,7 +27,6 @@ global $USER;
 
     </div>
 
-    <button data-toggle="collapse" data-target="#new_yulick"><?=GetMessage("NEW_YL")?></button><br/><br/>
     <div class="container-fluid <?=($arParams["AJAX"] && $arResult['newUserCreated'] != "Y")? '' : 'collapse'?>" style="border:1px dotted #ccc;" id="new_yulick">
         <form id="new_yulick_form"  action="" class="form-horizontal">
             <input type="hidden" name="UF_USERS_LINKS" value="<?=$USER->GetID()?>">
