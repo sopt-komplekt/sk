@@ -57,8 +57,8 @@ if($request->isAjaxRequest() && $request->getPost("dadata")){
                 'KPP' => $full_data['kpp'],
                 'INN' => $full_data['inn'],
                 'OGRN' => $full_data['ogrn'],
-                'NAME' => $mamagement_name[0],
-                'LAST_NAME' =>$mamagement_name[1],
+                'LAST_NAME' => $mamagement_name[0],
+                'NAME' =>$mamagement_name[1],
                 'CITY' => $address['city'],
                 'STREET' => $address['street']." ".$address['house']
             ];

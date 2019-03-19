@@ -35,6 +35,9 @@ class b2b extends CBitrixComponent{
         $request = Context::getCurrent()->getRequest();
 
         if ($request->isAjaxRequest() && $arParams["newUserData"]) {
+            echo "<pre>";
+            print_r($arParams["newUserData"]);
+            echo "</pre>";
             foreach($arParams["newUserData"] as $key=>$value){
                 if($key == 'UF_INN'){
                     $result["USER"]["LOGIN"] = htmlspecialchars($value)."_".$this->currentIdUser;
@@ -66,6 +69,7 @@ class b2b extends CBitrixComponent{
         //Заводим новое юр.лицо
         $user = new CUser;
         $arFields = $data;
+        $arFields["ACTIVE"] = 'N';
         $ID = $user->Add($arFields);
         if (intval($ID) > 0){
             self::addWorkNote(intval($ID));
@@ -78,14 +82,13 @@ class b2b extends CBitrixComponent{
     public function getAllYuF(){
         global $USER;
         $yu_lick = [];
-        $res_group = [];
         //Находим все связанные юридические лица
             $idArr = explode(";", $this->userArr["WORK_NOTES"]);
             foreach($idArr as $user_yl){
-                $res = $USER->GetByID($user_yl);
-                $yu_lick[] = $res->Fetch();
-                $res_group = $USER->GetUserGroupArray();
+                $res = $USER->GetByID($user_yl)->Fetch();
+                if($res["ACTIVE"] == 'Y') $yu_lick[] = $res;
             }
+
 
         return $yu_lick;
     }
@@ -134,6 +137,7 @@ class b2b extends CBitrixComponent{
             }else{
                 $this->arResult['newUserCreated'] = $userID;
             }
+            die($this->arResult['newUserCreated']);
         }
 
         if($this->userArr["WORK_NOTES"] !== "") {

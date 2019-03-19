@@ -103,7 +103,7 @@ global $USER;
                         <div class="form-group">
                             <label class="control-label col-sm-6" for="count_num"><?=GetMessage('INN')?></label>
                             <div class="col-sm-12">
-                                <input type="text" value="<?=$arResult['USER']['UF_INN']?>" class="form-control" name="UF_INN" pattern="[0-9]{10}" required/>
+                                <input type="text" value="<?=$arResult['USER']['UF_INN']?>" class="form-control" name="UF_INN" pattern="[0-9]{10}" required readonly/>
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@ global $USER;
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
                         <div class="form-group">
-                            <label class="control-label col-sm-6" for="count_num"><?=GetMessage('FIRST_NAME')?></label>
+                            <label class="control-label col-sm-6" for="count_num"><?=GetMessage('NAME')?></label>
                             <div class="col-sm-12">
                                 <input type="text" value="<?=$arResult['USER']['NAME']?>" class="form-control" name="NAME"/>
                             </div>
@@ -199,6 +199,33 @@ global $USER;
     ?>
     <div class="loader_cover">
         <div class="loader"></div>
+    </div>
+    <div class="yul_add_popup_cover">
+        <div id="success_yul_add_popup">
+            <div class="cross_close_popup">
+                <span>X</span>
+            </div>
+            <h2><?=GetMessage('NEW_YL_MODERATE')?></h2>
+            <div><?=GetMessage("NEW_YL_CONTENT")?></div>
+        </div>
+    </div>
+    <div class="yul_add_popup_cover">
+        <div id="exists_yul_add_popup">
+            <div class="cross_close_popup">
+                <span>X</span>
+            </div>
+            <h2><?=GetMessage('NEW_YL_EXISTS')?></h2>
+            <div><?=GetMessage("NEW_YL_EXISTS_CONTENT")?></div>
+        </div>
+    </div>
+    <div class="yul_add_popup_cover">
+        <div id="error_yul_add_popup">
+            <div class="cross_close_popup">
+                <span>X</span>
+            </div>
+            <h2><?=GetMessage('ERROR_YL_MODERATE')?></h2>
+            <div><?=GetMessage("ERROR_YL_CONTENT")?></div>
+        </div>
     </div>
 </div>
 <?else:?>

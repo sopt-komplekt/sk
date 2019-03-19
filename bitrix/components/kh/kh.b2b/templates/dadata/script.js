@@ -5,18 +5,26 @@ $(document).ready(function(){
         e.preventDefault();
         var form = new FormData($("#new_yulick_form")[0]);
         $.ajax({
-            type: "post",
+           type: "post",
            contentType: false,
            processData: false,
             url: "/personal/b2b/ajax.php",
             data: form,
             success: function(data) {
-             console.log(data);
-                $("#container_kh_b2b").replaceWith(data);
-                $("[data-target='#new_yulick']").trigger("click");
+             //console.log(data);
+             $("#new_yulick").removeClass("show");
+             if(data == "Y"){
+                 $("#success_yul_add_popup").parent().toggle();
+             }else if(data.indexOf('уже существует') !== -1){
+                 $("#exists_yul_add_popup").parent().toggle();
+             }else{
+                 $("#error_yul_add_popup").parent().toggle();
+             }
             },
             error: function(data){
-                console.log(data);
+                $("#new_yulick").removeClass("show");
+                $("#error_yul_add_popup").parent().toggle();
+                //console.log(data);
             }
         })
     });
@@ -51,20 +59,35 @@ $(document).ready(function(){
         //Send request to find information in dadata
         $.ajax({
             type: "post",
-            //dataType: 'application/json',
+            processData: false,
             url: "/personal/b2b/ajax_dadata.php",
             data: {'INN': inn_val, 'dadata':"YES"},
             success: function(res) {
                 res = JSON.parse(res);
                 if(res.STATUS == 'success'){
                     $("#new_yulick").addClass("show");
+                    $("input[name='WORK_COMPANY']").val(res.WORK_COMPANY);
+                    $("input[name='WORK_CITY']").val(res.CITY);
+                    $("input[name='PERSONAL_CITY']").val(res.CITY);
+                    $("input[name='WORK_STREET']").val(res.STREET);
+                    $("input[name='PERSONAL_STREET']").val(res.STREET);
+                    $("input[name='UF_INN']").val(res.INN);
+                    $("input[name='UF_KPP']").val(res.KPP);
+                    $("input[name='NAME']").val(res.NAME);
+                    $("input[name='LAST_NAME']").val(res.LAST_NAME);
+                }else{
+                    $("#inn_to_check_errors").html("Проверьте правильность введённых данных!");
                 }
-                console.log(res.STATUS);
             },
             error: function(err){
+                $("#inn_to_check_errors").html("Ошибка запроса данных! Попробуйте позже или обратитесь к нам по контактным данным");
                 console.log(err);
             }
         })
     });
+
+    $(".cross_close_popup span").on("click", function(){
+        $(this).parents(".yul_add_popup_cover").toggle();
+    })
 
 });

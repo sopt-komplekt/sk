@@ -5,6 +5,10 @@ button[data-target='#new_yulick'], button.new_yulick_button{
     border-radius: 15px;
 }
 
+#container_kh_b2b{
+    position:relative;
+}
+
 #inn_to_check{
     display: block;
     text-align: right;
@@ -72,11 +76,55 @@ button[data-target='#new_yulick'], button.new_yulick_button{
     justify-content: center;
     background: white;
     opacity: 0.5;
-
 }
-
 /* Loader */
 
+/*Popups*/
+.yul_add_popup_cover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    height: inherit;
+    width: inherit;
+    z-index: 20;
+    display: none; /*change into 'block'*/
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.5);
+}
+
+#success_yul_add_popup, #error_yul_add_popup, #exists_yul_add_popup{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    height: 200px;
+    width: 600px;
+    z-index: 21;
+    display: block; /*change into 'block'*/
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid lightgrey;
+    padding: 5px 20px;
+    text-align: center;
+}
+
+.cross_close_popup{
+    text-align: right;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.cross_close_popup>span{
+    cursor:pointer;
+}
+/*Popups*/
 .border-red{
     border:1px solid red!important;
 }
