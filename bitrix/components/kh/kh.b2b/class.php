@@ -35,9 +35,7 @@ class b2b extends CBitrixComponent{
         $request = Context::getCurrent()->getRequest();
 
         if ($request->isAjaxRequest() && $arParams["newUserData"]) {
-            echo "<pre>";
-            print_r($arParams["newUserData"]);
-            echo "</pre>";
+
             foreach($arParams["newUserData"] as $key=>$value){
                 if($key == 'UF_INN'){
                     $result["USER"]["LOGIN"] = htmlspecialchars($value)."_".$this->currentIdUser;

@@ -1,16 +1,18 @@
-<?php
+<?
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 /**
  * Created by PhpStorm.
  * User: A.Khudenko
  * Date: 06.03.2019
  * Time: 19:08
  */
+$this->setFrameMode(true);
 global $USER;
 ?>
 
 <?if(empty($arResult["USERS_LINKS"][0])):?>
 <div id="container_kh_b2b">
-
+    <? $frame = $this->createFrame()->begin(""); ?>
     <div class="row">
         <div class="col-sm-12">
             <br/>
@@ -166,6 +168,8 @@ global $USER;
     <?if($arResult['newUserCreated'] != "Y"):?>
         <p class="text-red"><?=$arResult['newUserCreated']?></p>
     <?endif;?>
+
+    <? $frame->end(); ?>
     <?
     if(is_array($arResult["YU_L"]) && !empty($arResult["YU_L"][0])):
         foreach($arResult["YU_L"] as $item):
