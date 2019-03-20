@@ -9,6 +9,7 @@
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Context;
 use Bitrix\Main\IO;
+use Bitrix\Main\Mail\Event;
 Loc::loadMessages(__FILE__);
 
 
@@ -29,11 +30,15 @@ class b2b extends CBitrixComponent{
         if (!$USER->IsAuthorized()) {
             LocalRedirect('/', false, '301 Moved permanently');
         }
-
+        //Get current user
         $this->currentIdUser = $USER->GetID();
+        $res = $USER->GetByID($this->currentIdUser);
+        $this->userArr = $res->Fetch();
+        //Param to get list of inactive users
+        $result['LEGAL_ENTITY'] = $arParams['LEGAL_ENTITY'];
 
+        //Prepare params for new user create
         $request = Context::getCurrent()->getRequest();
-
         if ($request->isAjaxRequest() && $arParams["newUserData"]) {
 
             foreach($arParams["newUserData"] as $key=>$value){
@@ -51,16 +56,32 @@ class b2b extends CBitrixComponent{
             $result["AJAX"] = $arParams["AJAX"];
         }
 
-        $res = $USER->GetByID($this->currentIdUser);
-        $this->userArr = $res->Fetch();
-
+        //Params for cache
         $result['PARAMS'] = array(
             "CACHE_TYPE" => $arParams["CACHE_TYPE"],
             "CACHE_TIME" => isset($arParams["CACHE_TIME"]) ?$arParams["CACHE_TIME"]: 36000000,
             "SET_TITLE" =>$arParams["SET_TITLE"]
         );
-
        return $result;
+    }
+
+    protected function getIALegalEntities(){
+
+        $legalEntitiesList = [];
+
+       $userFilter = ["ACTIVE"=>"N", "!UF_USERS_LINKS"=> '', "!WORK_COMPANY"=> '', "!UF_INN" => ''];
+        $userSelect = ["ID", "WORK_COMPANY", "WORK_CITY", "WORK_STREET", "LAST_NAME", "NAME", "PERSONAL_CITY", "PERSONAL_STREET", "PERSONAL_PHONE", "EMAIL", "UF_INN", "UF_KPP"];
+        $legalEntities =  \CUser::GetList(($by="UF_USERS_LINKS"), ($order="ASC"), $userFilter, ["SELECT"=>$userSelect]);
+        while($legalEntityItem = $legalEntities->Fetch())
+        {
+            foreach($userSelect as $select_item){
+                $legalEntitiesList[$legalEntityItem['ID']][$select_item] = $legalEntityItem[$select_item];
+            }
+            $connectedPerson = \CUSER::GetByID(explode("_", $legalEntityItem['LOGIN'])[1])->Fetch();
+            $legalEntitiesList[$legalEntityItem['ID']]["CONNECTED_PERSON"] = implode(" ", [$connectedPerson["LAST_NAME"], $connectedPerson["NAME"]]);
+            $legalEntitiesList[$legalEntityItem['ID']]["CONNECTED_PERSON_ID"] = $connectedPerson["ID"];
+        }
+        return $legalEntitiesList;
     }
 
     protected function createNewUser($data){
@@ -71,6 +92,20 @@ class b2b extends CBitrixComponent{
         $ID = $user->Add($arFields);
         if (intval($ID) > 0){
             self::addWorkNote(intval($ID));
+            Event::send(array(
+                "EVENT_NAME" => "NEW_YUL_APPLICATION",
+                "LID" => "s1",
+                "C_FIELDS" => array(
+                    "CONTACT_EMAIL" => $arFields["EMAIL"],
+                    "NEW_LEGAL_ENTITY" => $ID,
+                    "NAME_WHO_ADD" => implode("", [$this->userArr["LAST_NAME"], $this->userArr["NAME"]]),
+                    "ID_WHO_ADD" => $this->currentIdUser,
+                    "WORK_COMPANY"=>$arFields["WORK_COMPANY"],
+                    "CONTACT_NAME"=> implode("", [$arFields["LAST_NAME"],$arFields["NAME"]]),
+                    "INN"=> $arFields["UF_INN"],
+                    "KPP"=>$arFields["UF_KPP"]
+                ),
+            ));
             return "Y";
         }
         else
@@ -126,6 +161,11 @@ class b2b extends CBitrixComponent{
     {
         unset($this->arResult);
         $this->arResult = $this->arParams;
+        //If call to get list of inactive legal enities
+        if($this->arResult['LEGAL_ENTITY'] && $this->arResult['LEGAL_ENTITY'] == "moderate_list"){
+            $this->arResult["INACTIVE_LEGAL_ENTITIES"] = $this->getIALegalEntities();
+        }
+
         $this->arResult['newUserCreated'] = false;
         if($this->arParams["AJAX"]){
             $userID = $this->createNewUser($this->arResult['USER']);

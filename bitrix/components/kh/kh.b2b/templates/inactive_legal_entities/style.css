@@ -1,0 +1,142 @@
+button[data-target='#new_yulick'], button.new_yulick_button{
+    background: #ff9600;
+    border: #ff9600;
+    padding: 10px 15px;
+    border-radius: 15px;
+}
+
+#container_kh_b2b{
+    position:relative;
+}
+
+#inn_to_check{
+    display: block;
+    text-align: right;
+}
+
+#inn_to_check span{
+    color: #ff9600;
+    padding-top: 10px;
+    border: none;
+    background: none;
+    font-style: italic;
+    font-weight: 600;
+    cursor:pointer;
+}
+
+.text-red{
+    color:red;
+}
+
+.user-yul_accordion_authorize, .activate_user{
+    float: right;
+    color: #ff9600;
+    cursor: pointer;
+}
+
+.activate_user{
+    padding:5px 10px;
+    font-style:italic;
+}
+
+.phys_face_authorize{
+    color:#ff9600;
+    font-style: italic;
+    cursor: pointer;
+}
+
+/* Loader */
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader_cover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: inherit;
+    width: inherit;
+    z-index: 20;
+    display: none; /*change into 'flex'*/
+    align-items: center;
+    justify-content: center;
+    background: white;
+    opacity: 0.5;
+}
+/* Loader */
+
+/*Popups*/
+.yul_add_popup_cover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    height: inherit;
+    width: inherit;
+    z-index: 20;
+    display: none; /*change into 'block'*/
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.5);
+}
+
+#success_yul_add_popup, #error_yul_add_popup, #exists_yul_add_popup{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    height: 200px;
+    width: 600px;
+    z-index: 21;
+    display: block; /*change into 'block'*/
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid lightgrey;
+    padding: 5px 20px;
+    text-align: center;
+}
+
+.cross_close_popup{
+    text-align: right;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.cross_close_popup>span{
+    cursor:pointer;
+}
+/*Popups*/
+.border-red{
+    border:1px solid red!important;
+}
+
+#inn_to_check_errors{
+    color: red;
+    font-style: italic;
+    font-size: 12px;
+
+}
