@@ -233,6 +233,9 @@ global $USER;
     </div>
 </div>
 <?else:?>
+<div class="no_le_notice">
+<?=GetMessage('NO_LEGAL_ENTITIES')?><br/>
+</div>
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <tbody>
@@ -240,7 +243,6 @@ global $USER;
                     <tr>
                         <td><?=$item["LAST_NAME"]." ".$item["NAME"]?></td>
                         <td><?=$item["EMAIL"]?></td>
-                        <!--<td class="phys_face_authorize" data-yulid="<?/*=$item['ID']*/?>">Авторизоваться</td>-->
                         <td>
                             <a title="<?=GetMessage('AUTHORIZE')?>" class="user-yul_accordion_authorize" href="/personal/authorize.php?lang=ru&ID=<?=$item['ID']?>&action=authorize&<?=bitrix_sessid_get('sessid')?>">
                                 <?=GetMessage('AUTHORIZE')?>

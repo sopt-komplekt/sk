@@ -586,3 +586,8 @@ div.sale-order-list-repeat-container {
 		float: none;
 	}
 }
+
+
+.g-button--small {
+	padding: 11px 17px!important;
+}

@@ -19,9 +19,9 @@ class b2b extends CBitrixComponent{
     private $userArr = [];
     private $currentIdUser;
     private $groupsOfYul = [
-        '9'=> 'Партнёр',
-        '10'=> 'Дилер',
-        '11'=> 'МРЦ'
+        'PARTNER'=> '9',
+        'DILER'=> '10',
+        'MRC'=> '11'
     ];
 
     public function onPrepareComponentParams($arParams){
@@ -44,11 +44,13 @@ class b2b extends CBitrixComponent{
             foreach($arParams["newUserData"] as $key=>$value){
                 if($key == 'UF_INN'){
                     $result["USER"]["LOGIN"] = htmlspecialchars($value)."_".$this->currentIdUser;
+                    $result["USER"]["UF_INN"] = htmlspecialchars($value);
+                }elseif($key == 'UF_USERS_LINKS'){
+                    $result["USER"]["UF_USERS_LINKS"] = htmlspecialchars($value);
                 }
-                if($key == 'UF_USERS_LINKS'){
-                    $result["USER"]["UF_USERS_LINKS"][] = htmlspecialchars($value);
-                }
-                $result["USER"][$key] = htmlspecialchars($value);
+                elseif($key == 'WORK_COMPANY'){
+                    $result["USER"]["WORK_COMPANY"] = $value;
+                }else $result["USER"][$key] = htmlspecialchars($value);
             }
 
             $salt = randString(8);
@@ -62,6 +64,7 @@ class b2b extends CBitrixComponent{
             "CACHE_TIME" => isset($arParams["CACHE_TIME"]) ?$arParams["CACHE_TIME"]: 36000000,
             "SET_TITLE" =>$arParams["SET_TITLE"]
         );
+
        return $result;
     }
 
@@ -101,7 +104,7 @@ class b2b extends CBitrixComponent{
                     "NAME_WHO_ADD" => implode("", [$this->userArr["LAST_NAME"], $this->userArr["NAME"]]),
                     "ID_WHO_ADD" => $this->currentIdUser,
                     "WORK_COMPANY"=>$arFields["WORK_COMPANY"],
-                    "CONTACT_NAME"=> implode("", [$arFields["LAST_NAME"],$arFields["NAME"]]),
+                    "CONTACT_NAME"=> implode(' ', [$arFields["LAST_NAME"], $arFields["NAME"]]),
                     "INN"=> $arFields["UF_INN"],
                     "KPP"=>$arFields["UF_KPP"]
                 ),
@@ -184,6 +187,7 @@ class b2b extends CBitrixComponent{
         if($this->userArr["UF_USERS_LINKS"] !== "") {
             $this->arResult["USERS_LINKS"] = $this->getConnectedPhysPerson();
         }
+        $this->arResult["GROUP_OF_LEGAL_ENTITIES"] = $this->groupsOfYul;
 
        $this->includeComponentTemplate();
     }

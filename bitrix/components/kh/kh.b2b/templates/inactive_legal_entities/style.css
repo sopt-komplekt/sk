@@ -134,7 +134,7 @@ button[data-target='#new_yulick'], button.new_yulick_button{
     border:1px solid red!important;
 }
 
-#inn_to_check_errors{
+#inn_to_check_errors, #soglashenie_error_div{
     color: red;
     font-style: italic;
     font-size: 12px;

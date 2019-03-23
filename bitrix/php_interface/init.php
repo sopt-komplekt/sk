@@ -103,5 +103,74 @@
             return $return;
         }
     }
+
+AddEventHandler("main", "OnBeforeUserSendPassword", Array("MyClass", "OnBeforeUserSendPasswordHandler"));
+AddEventHandler("main", "OnBeforeUserRegister", Array("MyClassBeforeRegister", "OnBeforeUserRegisterHandler"));
+
+class MyClass
+{
+    // создаем обработчик события "OnBeforeUserAdd"
+    function OnBeforeUserSendPasswordHandler(&$arFields)
+    {
+        //проверяем, что пришло в поле, если не email, то пропускаем
+        if(strpos($arFields["LOGIN"], '@') != FALSE ){
+            $res = \CUSER::GetList(
+                ($by="personal_country"),
+                ($order="desc"),
+                array("EMAIL"=>trim(strip_tags($arFields["LOGIN"]))),
+                array("SELECT"=>"LOGIN")
+            );
+            $users2check = [];
+            while($result = $res->Fetch()){
+                $users2check[] = $result;
+            }
+
+            //исключаем юридические лица
+            foreach($users2check as $key=>$item){
+                if($item["WORK_COMPANY"] && $item["WORK_COMPANY"] != ""){
+                    echo "WORK_COMPANY".$item["WORK_COMPANY"],"<br>";
+                    unset($users2check[$key]);
+                }
+            }
+
+            //если были только юридические лица, то обнуляем запрос
+            if( count($users2check)!= 1){
+                $arFields["LOGIN"] = '';
+                $arFields["EMAIL"] = '';
+                LocalRedirect("/personal/private/?forgot_password=yes");
+            }
+
+            foreach($users2check as $key=>$item){
+                $arFields["LOGIN"] = $item["LOGIN"];
+                $arFields["EMAIL"] = $item["LOGIN"];
+            }
+            die();
+        }
+    }
+}
+class MyClassBeforeRegister
+{
+    // создаем обработчик события "OnBeforeUserRegister"
+    function OnBeforeUserRegisterHandler(&$arFields)
+    {
+        if(!$arFields["WORK_COMPANY"] && !$arFields["UF_INN"]){
+            $res = \CUSER::GetList(
+                ($by="personal_country"),
+                ($order="desc"),
+                array("EMAIL"=>trim(strip_tags($arFields["EMAIL"]))),
+                array("SELECT"=>"ID")
+            );
+
+            while($result = $res->Fetch()){
+                if(trim($result["WORK_COMPANY"]) == '')
+                $users2check[] = $result;
+            }
+
+            if(count($users2check)>0){
+                LocalRedirect('/personal/private/?register=yes&error_psw=y');
+            }
+        }
+    }
+}
     
 ?>

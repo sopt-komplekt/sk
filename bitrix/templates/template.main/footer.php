@@ -17,7 +17,8 @@
 							<? include($_SERVER["DOCUMENT_ROOT"].SITE_TEMPLATE_PATH."/include/footer/search.php"); ?>
 						</div>
 						<div class="b-footer__personal">
-							<a class="g-decorated-link" href="/personal/">
+
+							<a class="g-decorated-link" href="/personal/<?=(!$USER->IsAuthorized())?'private/':''?>">
 								<span>Личный кабинет</span>
 							</a>
 						</div>

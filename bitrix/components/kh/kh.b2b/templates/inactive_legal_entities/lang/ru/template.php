@@ -21,4 +21,7 @@ $MESS["CONTACT_EMAIL"] = "Контактный email";
 $MESS["CONTACT_PHONE"] = "Контактный телефон";
 $MESS["LEGAL_ENTITIES_OF"] = "Запрос на добовление юр.лица от";
 $MESS["ACTIVATE"] = "Активировать пользователя";
+$MESS["PARTNER"] = "Партнёр";
+$MESS["DILER"] = "Дилер";
+$MESS["MRC"] = "МРЦ";
 ?>
