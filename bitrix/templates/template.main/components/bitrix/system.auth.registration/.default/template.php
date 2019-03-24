@@ -9,8 +9,13 @@
 	<? else: ?>
 
 		<? if($arResult["USE_EMAIL_CONFIRMATION"] === "Y"): ?>
-			<div class="alert alert-warning"><?echo GetMessage("AUTH_EMAIL_WILL_BE_SENT")?></div>
+			<div class="alert alert-warning b-registration__error_pass"><?echo GetMessage("AUTH_EMAIL_WILL_BE_SENT")?></div>
 		<? endif; ?>
+        <?if($arResult["REGISTER_ERROR_EMAIL"] == "Y"){?>
+        <div class="b-registration__error_pass">
+            <?=GetMessage("REGISTER_ERROR_EMAIL");?>
+        </div>
+    <? }?>
 		<h3><?=GetMessage("AUTH_PLEASE_REG")?></h3>
 		<form name="bform" method="post" action="<?=$arResult["AUTH_URL"]?>" enctype="multipart/form-data">
 		<? if($arResult["BACKURL"] != ''): ?>

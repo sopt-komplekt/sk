@@ -128,7 +128,6 @@ class MyClass
             //исключаем юридические лица
             foreach($users2check as $key=>$item){
                 if($item["WORK_COMPANY"] && $item["WORK_COMPANY"] != ""){
-                    echo "WORK_COMPANY".$item["WORK_COMPANY"],"<br>";
                     unset($users2check[$key]);
                 }
             }
@@ -144,7 +143,6 @@ class MyClass
                 $arFields["LOGIN"] = $item["LOGIN"];
                 $arFields["EMAIL"] = $item["LOGIN"];
             }
-            die();
         }
     }
 }
@@ -167,9 +165,11 @@ class MyClassBeforeRegister
             }
 
             if(count($users2check)>0){
-                LocalRedirect('/personal/private/?register=yes&error_psw=y');
+                $_SESSION['REGISTER_ERROR_EMAIL'] = 'Y';
+                LocalRedirect('/personal/private/?register=yes');
             }
         }
+
     }
 }
     

@@ -114,3 +114,9 @@
 .b-registration {
     margin-bottom: 40px;
 }
+
+.b-registration__error_pass{
+    color:red;
+    font-style: italic;
+    font-size: 12px;
+}
