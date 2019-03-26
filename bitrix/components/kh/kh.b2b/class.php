@@ -16,18 +16,15 @@ Loc::loadMessages(__FILE__);
 class b2b extends CBitrixComponent{
 
     private $log_file = "/_tmp/log.log";
-    private $name;
+    /*private $name;*/
     private $userArr = [];
     private $currentIdUser;
     private $groupsOfYul = [
         'PARTNER'=> '9',
         'DILER'=> '10',
-        'MRC'=> '11'
+        'MRC'=> '11',
+        'ROZNICA' => '12'
     ];
-
-    public function getName(){
-        return $this->name;
-    }
 
     public function onPrepareComponentParams($arParams){
 
@@ -77,8 +74,18 @@ class b2b extends CBitrixComponent{
 
         $legalEntitiesList = [];
 
+        $obCache = new CPHPCache();
+        $cachePath = '/kh.b2b/inactive_yulick/';
+        $cacheLifeTime = intval($this->arResult["PARAMS"]["CACHE_TIME"]);
+        $cacheID =  $this->getName();
+        if($obCache->initCache($cacheLifeTime,$cacheID,$cachePath)){
+            $arVars = $obCache->getVars();
+            $legalEntitiesList = $arVars['legalEntitiesList'];
+            $obCache->Output();
+        }elseif($obCache->StartDataCache()) {
+
        $userFilter = ["ACTIVE"=>"N", "!UF_USERS_LINKS"=> '', "!WORK_COMPANY"=> '', "!UF_INN" => ''];
-        $userSelect = ["ID", "WORK_COMPANY", "WORK_CITY", "WORK_STREET", "LAST_NAME", "NAME", "PERSONAL_CITY", "PERSONAL_STREET", "PERSONAL_PHONE", "EMAIL", "UF_INN", "UF_KPP"];
+        $userSelect = ["ID", "WORK_COMPANY", "WORK_CITY", "WORK_STREET", "LAST_NAME", "NAME", "PERSONAL_CITY", "PERSONAL_STREET", "PERSONAL_PHONE", "EMAIL", "UF_INN", "UF_KPP", "UF_GENERAL_DIRECTOR"];
         $legalEntities =  \CUser::GetList(($by="UF_USERS_LINKS"), ($order="ASC"), $userFilter, ["SELECT"=>$userSelect]);
         while($legalEntityItem = $legalEntities->Fetch())
         {
@@ -89,11 +96,14 @@ class b2b extends CBitrixComponent{
             $legalEntitiesList[$legalEntityItem['ID']]["CONNECTED_PERSON"] = implode(" ", [$connectedPerson["LAST_NAME"], $connectedPerson["NAME"]]);
             $legalEntitiesList[$legalEntityItem['ID']]["CONNECTED_PERSON_ID"] = $connectedPerson["ID"];
         }
+            $obCache->EndDataCache(array("legalEntitiesList"=>$legalEntitiesList));
+        }
         return $legalEntitiesList;
     }
 
     protected function createNewUser($data){
         //Заводим новое юр.лицо
+        BXClearCache(true, "/kh.b2b/inactive_yulick/");
         $user = new CUser;
         $arFields = $data;
         $arFields["ACTIVE"] = 'N';
@@ -125,9 +135,9 @@ class b2b extends CBitrixComponent{
         $yu_lick = [];
         //Закэшируем результат
          $obCache = new CPHPCache();
-         $cachePath = '/kh.b2b/';
-         $cacheLifeTime = intval($this->arParams["CACHE_TIME"]);
-         $cacheID = $this->getName();
+         $cachePath = '/kh.b2b/yu_lick/';
+         $cacheLifeTime = intval($this->arResult["PARAMS"]["CACHE_TIME"]);
+         $cacheID =  $this->getName();
          if($obCache->initCache($cacheLifeTime,$cacheID,$cachePath)){
              $arVars = $obCache->getVars();
              $yu_lick = $arVars['yu_lick'];
@@ -203,7 +213,7 @@ class b2b extends CBitrixComponent{
             $this->arResult["USERS_LINKS"] = $this->getConnectedPhysPerson();
         }
         $this->arResult["GROUP_OF_LEGAL_ENTITIES"] = $this->groupsOfYul;
-
+        $this->arResult["CURRENT_USER"] = $this->userArr;
        $this->includeComponentTemplate();
     }
 

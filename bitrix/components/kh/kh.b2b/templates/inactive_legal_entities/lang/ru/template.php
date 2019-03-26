@@ -24,4 +24,6 @@ $MESS["ACTIVATE"] = "Активировать пользователя";
 $MESS["PARTNER"] = "Партнёр";
 $MESS["DILER"] = "Дилер";
 $MESS["MRC"] = "МРЦ";
+$MESS["ROZNICA"] = "Розница";
+$MESS["GENERAL_DIRECTOR"] = "Генеральный директор";
 ?>

@@ -24,6 +24,8 @@ $fields = Array(
 $emailFields = $USER->GetByID($ID)->Fetch();
 $nameOfPhys = $USER->GetByID($emailFields['UF_USERS_LINKS'])->Fetch();
 if($user->Update($ID, $fields)){
+    BXClearCache(true, "/kh.b2b/inactive_yulick/");
+    BXClearCache(true, "/kh.b2b/yu_lick/");
     Event::send(array(
         "EVENT_NAME" => "NEW_YUL_APPLICATION_ADOPT",
         "LID" => "s1",

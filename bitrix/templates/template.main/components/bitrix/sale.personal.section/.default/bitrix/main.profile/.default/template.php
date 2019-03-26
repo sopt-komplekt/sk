@@ -3,7 +3,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
 	die();
 
 use Bitrix\Main\Localization\Loc;
-
+use \Bitrix\Main\Page\Asset;
+Asset::getInstance()->addCss("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+Asset::getInstance()->addJs("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js");
 ?>
 
 <div class="bx_profile">

@@ -11,3 +11,23 @@
 .b-header__user.is-auth .b-header__user-item.personal:hover ~ .b-header__user-item.user-yul{
     display:block;
 }
+
+.l-page__header.b-header.jsHeader.b-header--fixed.b-header--translated.b-header--showed{
+    height:80px;
+}
+
+.l-page__header.b-header.jsHeader.b-header--fixed.b-header--translated.b-header--showed>.l-wrapper.b-header__wrapper{
+    height:inherit;
+}
+
+.l-page__header.b-header.jsHeader.b-header--fixed.b-header--translated.b-header--showed .b-header__nav-btn.jsHeaderNavButton{
+    height:80px;
+}
+
+.l-page__header.b-header.jsHeader.b-header--fixed.b-header--translated.b-header--showed .b-header__user-item.user-info{
+    display:block;
+}
+
+.l-page__header.b-header.jsHeader.b-header--fixed.b-header--translated.b-header--showed .b-header__user.is-auth{
+    margin-top:-25px!important;
+}

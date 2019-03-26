@@ -73,8 +73,7 @@ $(document).ready(function(){
                     $("input[name='PERSONAL_STREET']").val(res.STREET);
                     $("input[name='UF_INN']").val(res.INN);
                     $("input[name='UF_KPP']").val(res.KPP);
-                    $("input[name='NAME']").val(res.NAME);
-                    $("input[name='LAST_NAME']").val(res.LAST_NAME);
+                    $("input[name='UF_GENERAL_DIRECTOR']").val(res.LAST_NAME +" "+ res.NAME);
                 }else{
                     $("#inn_to_check_errors").html("Проверьте правильность введённых данных!");
                 }

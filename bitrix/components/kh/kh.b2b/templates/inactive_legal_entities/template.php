@@ -26,6 +26,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
                     </div>
                     <div id="INN_<?=$item['UF_INN']?>" class="collapse" data-parent="#accordion">
                         <div class="card-body">
+                            <p><b><?=GetMessage('GENERAL_DIRECTOR')?>:</b> <?=$item['UF_GENERAL_DIRECTOR']?></p>
                             <p><b><?=GetMessage('INN')?>/<?=GetMessage('KPP')?>:</b> <?=$item['UF_INN']?>/<?=$item['UF_KPP']?></p>
                             <p><b><?=GetMessage('PH_ADDRESS')?>:</b> <?=implode(", ", [$item['PERSONAL_ZIP'], $item['PERSONAL_CITY'], $item['PERSONAL_STREET']])?></p>
                             <p><b><?=GetMessage('YU_ADDRESS')?>:</b> <?=$item['WORK_ZIP']?>, <?=$item['WORK_CITY']?>, <?=$item['WORK_STREET']?></p>
@@ -48,6 +49,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
                                 <div class="form-check-inline">
                                     <label class="form-check-label">
                                         <input type="radio" class="form-check-input" value='<?=$arResult["GROUP_OF_LEGAL_ENTITIES"]["MRC"]?>' name="soglashenie_<?=$item['UF_INN']?>"><?=GetMessage('MRC')?>
+                                    </label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" value='<?=$arResult["GROUP_OF_LEGAL_ENTITIES"]["ROZNICA"]?>' name="soglashenie_<?=$item['UF_INN']?>"><?=GetMessage('ROZNICA')?>
                                     </label>
                                 </div>
                             </div>

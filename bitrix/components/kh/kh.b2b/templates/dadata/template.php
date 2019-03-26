@@ -44,6 +44,17 @@ global $USER;
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <br/>
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="count_num"><?=GetMessage('GENERAL_DIRECTOR')?></label>
+                            <div class="col-sm-12">
+                                <input type="text" value="<?=$arResult['USER']['UF_GENERAL_DIRECTOR']?>" class="form-control" name="UF_GENERAL_DIRECTOR"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h5><?=GetMessage('YU_ADDRESS')?></h5>
                 <div class="row">
 
@@ -125,7 +136,7 @@ global $USER;
                         <div class="form-group">
                             <label class="control-label col-sm-6" for="count_num"><?=GetMessage('NAME')?></label>
                             <div class="col-sm-12">
-                                <input type="text" value="<?=$arResult['USER']['NAME']?>" class="form-control" name="NAME"/>
+                                <input type="text" value="<?=$arResult['CURRENT_USER']['NAME']?>" class="form-control" name="NAME"/>
                             </div>
                         </div>
                     </div>
@@ -133,7 +144,7 @@ global $USER;
                         <div class="form-group">
                             <label class="control-label col-sm-6" for="count_num"><?=GetMessage('LAST_NAME')?></label>
                             <div class="col-sm-12">
-                                <input type="text" value="<?=$arResult['USER']['LAST_NAME']?>" class="form-control" name="LAST_NAME"/>
+                                <input type="text" value="<?=$arResult['CURRENT_USER']['LAST_NAME']?>" class="form-control" name="LAST_NAME"/>
                             </div>
                         </div>
                     </div>
@@ -187,7 +198,8 @@ global $USER;
                     </div>
                     <div id="INN_<?=$item['UF_INN']?>" class="collapse" data-parent="#accordion">
                         <div class="card-body">
-                            <p><b><?=GetMessage('INN')?>/<?=GetMessage('KPP')?>:</b> <?=$item['UF_INN']?>/<?=$item['UF_KPP']?></p>
+                            <p><b><?=GetMessage('GENERAL_DIRECTOR')?>:</b> <?=$item['UF_GENERAL_DIRECTOR']?></p>
+                             <p><b><?=GetMessage('INN')?>/<?=GetMessage('KPP')?>:</b> <?=$item['UF_INN']?>/<?=$item['UF_KPP']?></p>
                             <p><b><?=GetMessage('PH_ADDRESS')?>:</b> <?=$item['PERSONAL_ZIP']?>, <?=$item['PERSONAL_CITY']?>, <?=$item['PERSONAL_STREET']?></p>
                             <p><b><?=GetMessage('YU_ADDRESS')?>:</b> <?=$item['WORK_ZIP']?>, <?=$item['WORK_CITY']?>, <?=$item['WORK_STREET']?></p>
                             <p><b><?=GetMessage('CONTACT_PERSONE')?>:</b> <?=$item['LAST_NAME']?> <?=$item['NAME']?></p>

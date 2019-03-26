@@ -15,6 +15,7 @@ $MESS["PERSONAL_PHONE"] = "Контактыный телефон";
 $MESS["NEW_YL"] = "Завести новое юр.лицо";
 $MESS["SUBMIT"] = "Завести новое юр.лицо";
 $MESS["NEW_YL_CREATED"] = "Зарегистрировано новое юр.лицо";
+$MESS["GENERAL_DIRECTOR"] = "Генеральный директор";
 $MESS["CONTACT_PERSONE"] = "Контактное лицо";
 $MESS["CONTACT_EMAIL"] = "Контактный email";
 $MESS["CONTACT_PHONE"] = "Контактный телефон";

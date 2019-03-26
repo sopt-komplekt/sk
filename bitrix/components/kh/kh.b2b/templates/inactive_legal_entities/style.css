@@ -140,3 +140,12 @@ button[data-target='#new_yulick'], button.new_yulick_button{
     font-size: 12px;
 
 }
+
+.form-check-inline{
+    padding-left: 0.75rem;
+    margin-right: 0;
+}
+
+.activate_user{
+    text-align:right;
+}
