@@ -16,6 +16,7 @@ Loc::loadMessages(__FILE__);
 class b2b extends CBitrixComponent{
 
     private $log_file = "/_tmp/log.log";
+    private $name;
     private $userArr = [];
     private $currentIdUser;
     private $groupsOfYul = [
@@ -23,6 +24,10 @@ class b2b extends CBitrixComponent{
         'DILER'=> '10',
         'MRC'=> '11'
     ];
+
+    public function getName(){
+        return $this->name;
+    }
 
     public function onPrepareComponentParams($arParams){
 
@@ -118,14 +123,24 @@ class b2b extends CBitrixComponent{
     public function getAllYuF(){
         global $USER;
         $yu_lick = [];
-        //Находим все связанные юридические лица
-            $idArr = explode(";", $this->userArr["WORK_NOTES"]);
-            foreach($idArr as $user_yl){
-                $res = $USER->GetByID($user_yl)->Fetch();
-                if($res["ACTIVE"] == 'Y') $yu_lick[] = $res;
-            }
-
-
+        //Закэшируем результат
+         $obCache = new CPHPCache();
+         $cachePath = '/kh.b2b/';
+         $cacheLifeTime = intval($this->arParams["CACHE_TIME"]);
+         $cacheID = $this->getName();
+         if($obCache->initCache($cacheLifeTime,$cacheID,$cachePath)){
+             $arVars = $obCache->getVars();
+             $yu_lick = $arVars['yu_lick'];
+             $obCache->Output();
+         }elseif($obCache->StartDataCache()) {
+             //Находим все связанные юридические лица
+             $idArr = explode(";", $this->userArr["WORK_NOTES"]);
+             foreach($idArr as $user_yl){
+                 $res = $USER->GetByID($user_yl)->Fetch();
+                 if($res["ACTIVE"] == 'Y') $yu_lick[] = $res;
+             }
+             $obCache->EndDataCache(array("yu_lick"=>$yu_lick));
+         }
         return $yu_lick;
     }
 
