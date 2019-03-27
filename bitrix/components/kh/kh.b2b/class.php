@@ -137,7 +137,7 @@ class b2b extends CBitrixComponent{
          $obCache = new CPHPCache();
          $cachePath = '/kh.b2b/yu_lick/';
          $cacheLifeTime = intval($this->arResult["PARAMS"]["CACHE_TIME"]);
-         $cacheID =  $this->getName();
+         $cacheID =  $this->getName().'_yu_lick_'.$this->currentIdUser;
          if($obCache->initCache($cacheLifeTime,$cacheID,$cachePath)){
              $arVars = $obCache->getVars();
              $yu_lick = $arVars['yu_lick'];

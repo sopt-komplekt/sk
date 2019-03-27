@@ -1,6 +1,9 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 use Bitrix\Main\Localization\Loc;
+use \Bitrix\Main\Page\Asset;
+Asset::getInstance()->addCss("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+Asset::getInstance()->addJs("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js");
 ?>
 <div class="sale-profile-detail-link-list">
 	<a class="g-decorated-link" href="<?=$arParams["PATH_TO_LIST"]?>"><span><?=GetMessage("SPPD_RECORDS_LIST")?></span></a>
@@ -11,7 +14,7 @@ if(strlen($arResult["ID"])>0)
 {
 	ShowError($arResult["ERROR_MESSAGE"]);
 	?>
-	<form method="post"  class="col-md-12 sale-profile-detail-form" action="<?=POST_FORM_ACTION_URI?>" enctype="multipart/form-data">
+	<form method="post"  class="col-xs-12 sale-profile-detail-form" action="<?=POST_FORM_ACTION_URI?>" enctype="multipart/form-data">
 		<?=bitrix_sessid_post()?>
 		<input type="hidden" name="ID" value="<?=$arResult["ID"]?>">
 		<div class="sale-personal-profile-detail-form-title-row col-md-offset-3 col-md-9">
@@ -20,13 +23,13 @@ if(strlen($arResult["ID"])>0)
 			</h4>
 		</div>
 		<div class="form-group">
-			<label class="sale-personal-profile-detail-form-label col-md-3 text-md-right"><?=Loc::getMessage('SALE_PERS_TYPE')?></label>
+			<label class="sale-personal-profile-detail-form-label col-md-3"><?=Loc::getMessage('SALE_PERS_TYPE')?></label>
 			<div class="col-md-12">
 				<?=$arResult["PERSON_TYPE"]["NAME"]?>
 			</div>
 		</div>		
 		<div class="form-group">
-			<label class="sale-personal-profile-detail-form-label col-md-3 text-md-right" for="sale-personal-profile-detail-name">
+			<label class="sale-personal-profile-detail-form-label col-md-3" for="sale-personal-profile-detail-name">
 				<?=Loc::getMessage('SALE_PNAME')?>:<span class="req">*</span>
 			</label>
 			<div class="col-md-12">
@@ -53,7 +56,7 @@ if(strlen($arResult["ID"])>0)
 					$alignTop = ($property["TYPE"] === "LOCATION" && $arParams['USE_AJAX_LOCATIONS'] === 'Y') ? "vertical-align-top" : "";
 					?>
 					<div class="form-group sale-personal-profile-detail-property-<?=strtolower($property["TYPE"])?>">
-						<label class="sale-personal-profile-detail-form-label col-md-3 text-md-right <?=$alignTop?>" for="sppd-property-<?=$key?>">
+						<label class="sale-personal-profile-detail-form-label col-md-3 <?=$alignTop?>" for="sppd-property-<?=$key?>">
 							<?= $property["NAME"]?>:
 							<?
 							if ($property["REQUIED"] == "Y")

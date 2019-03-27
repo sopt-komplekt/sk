@@ -2472,9 +2472,9 @@ pre code {
         margin-left: 33.33333333%
     }
 
-    .col-md-offset-3 {
+/*    .col-md-offset-3 {
         margin-left: 25%
-    }
+    }*/
 
     .col-md-offset-2 {
         margin-left: 16.66666667%
@@ -7166,7 +7166,7 @@ button.close {
 .form-control {
 	display: block;
 	width: 100%;
-	max-width: 700px;
+	/*max-width: 700px;*/
 	border: 1px solid #cacaca;
 	border-radius: 2px;
 	height: 46px;
@@ -7242,7 +7242,7 @@ button.close {
 
 	.sale-personal-profile-detail-form-label, .sale-profile-detail-form input[class*="col-"] {
 		float: none !important;
-		display: table-cell;
+		/*display: table-cell;*/
 		vertical-align: middle;
 	}
 }
@@ -7310,6 +7310,12 @@ button.close {
 		border-bottom: 1px solid #CCD5DB;
 		padding: 20px 0 10px;
 	}
+}
+
+.sale-profile-detail-form{
+    padding-left:0!important;
+    padding-right:0!important;
+    border:1px dotted grey;
 }
 
 
