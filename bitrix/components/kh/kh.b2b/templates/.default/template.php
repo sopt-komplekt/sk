@@ -5,6 +5,7 @@
  * Date: 06.03.2019
  * Time: 19:08
  */
+$this->setFrameMode(true);
 global $USER;
 ?>
 

@@ -654,6 +654,7 @@
   var exports = createMethod();
 
   if (COMMON_JS) {
+    root.md5 = exports;
     module.exports = exports;
   } else {
     /**

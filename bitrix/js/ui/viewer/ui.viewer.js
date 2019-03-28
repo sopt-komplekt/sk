@@ -17,6 +17,8 @@
 
 		this.zIndex = options.zIndex || 999999;
 		this.cycleMode = options.hasOwnProperty('cycleMode')? options.cycleMode : true;
+		this.preload = options.hasOwnProperty('preload')? options.preload : 3;
+		this.cachedData = {};
 		this.optionsByGroup = {};
 		this.layout = {
 			container: null,
@@ -55,47 +57,92 @@
 	BX.UI.Viewer.Controller.prototype = {
 		/**
 		 * @param {HTMLElement} node
+		 * @return {BX.Promise}
 		 */
 		buildItemListByNode: function (node)
 		{
+			var promise = new BX.Promise();
+			var nodes = node.dataset.viewerGroupBy?
+				[].slice.call(node.ownerDocument.querySelectorAll("[data-viewer][data-viewer-group-by='" + node.dataset.viewerGroupBy + "']")) :
+				[node]
+			;
+
+			this.loadExtensions(this.collectExtensionsForItems(nodes)).then(function (){
+				var items = nodes.map(function(node) {
+					return BX.UI.Viewer.buildItemByNode(node);
+				});
+
+				promise.fulfill(items);
+			}.bind(this));
+
+			return promise;
+		},
+
+		shouldRunViewer: function (node)
+		{
 			if (!BX.type.isDomNode(node) || !node.dataset)
 			{
-				return [];
+				return false;
 			}
 
 			if (!node.dataset.hasOwnProperty('viewer'))
 			{
-				return [];
+				return false;
 			}
 
-			if (!node.dataset.viewerGroupBy)
-			{
-				return [
-					BX.UI.Viewer.buildItemByNode(node)
-				];
-			}
+			return true;
+		},
 
-			var nodes = [].slice.call(node.ownerDocument.querySelectorAll("[data-viewer][data-viewer-group-by='" + node.dataset.viewerGroupBy + "']"));
-
-			return nodes.map(function(node) {
-				return BX.UI.Viewer.buildItemByNode(node);
+		/**
+		 *
+		 * @param {HTMLElement[]} nodes
+		 * @return {Array}
+		 */
+		collectExtensionsForItems: function (nodes)
+		{
+			var extensionSet = new Set();
+			nodes.forEach(function (node) {
+				if (BX.type.isString(node.dataset.viewerExtension))
+				{
+					extensionSet.add(node.dataset.viewerExtension);
+				}
 			});
+
+			var extensions = [];
+			extensionSet.forEach(function (ext) {
+				extensions.push(ext);
+			});
+
+			return extensions;
 		},
 
 		handleDocumentClick: function (event)
 		{
 			var target = BX.getEventTarget(event);
-			var items = this.buildItemListByNode(target);
-			if (items.length === 0)
+			if (!this.shouldRunViewer(target))
 			{
 				return;
 			}
 
-			this.setItems(items).then(function(){
-				this.open(this.getIndexByNode(target));
-			}.bind(this));
-
 			event.preventDefault();
+			this.buildItemListByNode(target).then(function(items){
+				if (items.length === 0)
+				{
+					return;
+				}
+
+				//shortcut for download
+				if ((BX.browser.IsMac() && event.metaKey) || event.ctrlKey)
+				{
+					this.runActionByNode(target, 'download');
+				}
+				else
+				{
+					this.setItems(items).then(function(){
+						this.open(this.getIndexByNode(target));
+					}.bind(this));
+				}
+			}.bind(this));
 		},
 
 		bindEvents: function ()
@@ -124,7 +171,69 @@
 
 			BX.addCustomEvent('SidePanel.Slider:onOpen', this.handlers.handleSliderOpen);
 			BX.addCustomEvent('SidePanel.Slider:onCloseComplete', this.handlers.handleSliderCloseComplete);
-			BX.addCustomEvent('SidePanel.Slider:onCloseByEsc', this.handlers.handleSliderCloseByEsc);			
+			BX.addCustomEvent('SidePanel.Slider:onCloseByEsc', this.handlers.handleSliderCloseByEsc);
+		},
+
+		handleVisibleControls: function(ev)
+		{
+			if(this._timerIdReadingMode)
+			{
+				clearTimeout(this._timerIdReadingMode);
+			}
+
+			if(!this.cursorInPerimeter(ev) || BX.findParent(ev.target, { className: 'ui-viewer-next' }) || BX.findParent(ev.target, { className: 'ui-viewer-prev' }))
+			{
+				this.disableReadingMode();
+			}
+			else
+			{
+				this._timerIdReadingMode = setTimeout(function()
+				{
+					this.enableReadingMode();
+				}.bind(this), 2800);
+			}
+		},
+
+		enableReadingMode: function(withTimer)
+		{
+			if(withTimer)
+			{
+				this._timerIdReadingMode = setTimeout(function()
+				{
+					this.layout.container.classList.add('ui-viewer-reading-mode');
+				}.bind(this), 5000);
+
+				return;
+			}
+
+			this.layout.container.classList.add('ui-viewer-reading-mode');
+		},
+
+		disableReadingMode: function()
+		{
+			if(this._timerIdReadingMode)
+			{
+				clearTimeout(this._timerIdReadingMode);
+			}
+
+			this.layout.container.classList.remove('ui-viewer-reading-mode');
+		},
+
+		cursorInPerimeter: function(ev)
+		{
+			var offsetVertical = document.body.clientHeight / 100 * 30;
+			var offsetHorizontal = document.body.clientWidth / 100 * 30;
+
+			offsetHorizontal < 300 ? offsetHorizontal = 300 : null;
+			offsetVertical < 300 ? offsetVertical = 300 : null;
+
+			if(	ev.y < offsetVertical || ev.y > document.body.clientHeight - offsetVertical ||
+				ev.x < offsetHorizontal || ev.x > document.body.clientWidth - offsetHorizontal)
+			{
+				return false
+			}
+
+			return true;
 		},
 
 		/**
@@ -214,27 +323,29 @@
 
 		openByNode: function (node)
 		{
-			var items = this.buildItemListByNode(node);
-			if (items.length === 0)
-			{
-				return;
-			}
+			this.buildItemListByNode(node).then(function (items) {
+				if (items.length === 0)
+				{
+					return;
+				}
 
-			this.setItems(items).then(function(){
-				this.open(this.getIndexByNode(node));
+				this.setItems(items).then(function(){
+					this.open(this.getIndexByNode(node));
+				}.bind(this));
 			}.bind(this));
 		},
 
 		runActionByNode: function (node, actionId, additionalParams)
 		{
-			var items = this.buildItemListByNode(node);
-			if (items.length === 0)
-			{
-				return;
-			}
+			this.buildItemListByNode(node).then(function (items) {
+				if (items.length === 0)
+				{
+					return;
+				}
 
-			this.setItems(items).then(function(){
-				this.runAction(this.getIndexByNode(node), actionId, additionalParams);
+				this.setItems(items).then(function(){
+					this.runAction(this.getIndexByNode(node), actionId, additionalParams);
+				}.bind(this));
 			}.bind(this));
 		},
 
@@ -397,11 +508,12 @@
 				return;
 			}
 
-			this.currentIndex = index;
-
 			this.hideErrorBlock();
 			this.hideCurrentItem();
+			this.disableReadingMode();
 			this.showLoading();
+
+			this.currentIndex = index;
 
 			this.actionPanel.removeItems();
 			this.actionPanel.addItems(
@@ -430,10 +542,33 @@
 				BX.onCustomEvent('BX.UI.Viewer.Controller:onAfterProcessItemError', [this, reason, loadedItem]);
 			}.bind(this));
 
+			this.processPreload(this.currentIndex);
 			this.updateControls();
 
 			this.lockScroll();
 			this.adjustViewerHeight();
+		},
+
+		processPreload: function (fromIndex)
+		{
+			if (!this.preload)
+			{
+				return;
+			}
+
+			var preloadIndex = fromIndex + 1;
+			while(preloadIndex < (this.preload + fromIndex + 1))
+			{
+				var itemByIndex = this.getItemByIndex(preloadIndex);
+				if (!itemByIndex)
+				{
+					break;
+				}
+
+				console.log('Trying to preload', preloadIndex);
+				itemByIndex.load();
+				preloadIndex++;
+			}
 		},
 
 		/**
@@ -484,16 +619,47 @@
 			{
 				fragment.appendChild(BX.create('div', {
 					props: {
-						className: 'viewer-inner-caption'
+						className: 'ui-viewer-inner-caption'
 					},
-					text: title
+					children: [
+						BX.create('span', {
+							text: title
+						})
+					]
 				}));
 			}
 
 			contentWrapper.appendChild(fragment);
+			var classList = this.layout.container.classList;
+			var containerModifiers = item.listContainerModifiers();
+			if (containerModifiers.length)
+			{
+				classList.add.apply(classList, containerModifiers);
+			}
+
 			this.layout.itemContainer.appendChild(contentWrapper);
 
 			item.afterRender();
+			this.adjustControlsSize(item.getContentWidth());
+		},
+
+		adjustControlsSize: function(contentWidth)
+		{
+			this.getNextButton().style.width = null;
+			this.getPrevButton().style.width = null;
+			this.getNextButton().style.maxWidth = null;
+			this.getPrevButton().style.maxWidth = null;
+
+			if (contentWidth instanceof BX.Promise)
+			{
+				contentWidth.then(function(width) {
+					var controlWidth = (document.body.offsetWidth - width) / 2;
+					this.getNextButton().style.width = controlWidth + 'px';
+					this.getPrevButton().style.width = controlWidth + 'px';
+					this.getNextButton().style.maxWidth = 'none';
+					this.getPrevButton().style.maxWidth = 'none';
+				}.bind(this));
+			}
 		},
 
 		/**
@@ -505,13 +671,11 @@
 			reason = reason || {};
 
 			var message = reason.message || null;
-			var description = reason.description || null;
-
 			if (BX.type.isArray(reason.errors) && reason.errors.length)
 			{
 				if (reason.errors[0].code === 1000 && !reason.message)
 				{
-					message = BX.message('JS_UI_VIEWER_ITEM_TRANSFORMATION_TIMEOUT');
+					message = BX.message("JS_UI_VIEWER_ITEM_TRANSFORMATION_ERROR_1").replace('#DOWNLOAD_LINK#', item.getSrc());
 				}
 			}
 
@@ -529,18 +693,28 @@
 			{
 				contentWrapper.appendChild(BX.create('div', {
 						props: {
-							className: 'viewer-inner-caption'
+							className: 'ui-viewer-inner-caption'
 						},
-						text: title
+						children: [
+							BX.create('span', {
+								html: title
+							})
+						]
 					})
 				);
 			}
 
-			contentWrapper.appendChild(this.getErrorBlock({
-				title: message,
-				description: description
-			}));
-			
+			var options = {};
+			if (message)
+			{
+				options.title = message;
+			}
+			if (reason.description)
+			{
+				options.description = reason.description;
+			}
+			contentWrapper.appendChild(this.getErrorBlock(options, item));
+
 			this.layout.itemContainer.appendChild(contentWrapper);
 		},
 
@@ -552,16 +726,23 @@
 			}
 		},
 
-		getErrorBlock: function(options)
+		/**
+		 * @param {Object} options
+		 * @param {?string} [options.viewType='info']
+		 * @param {?string} [options.title]
+		 * @param {?string} [options.description]
+		 * @param {BX.UI.Viewer.Item} item
+		 * @return {null}
+		 */
+		getErrorBlock: function(options, item)
 		{
 			this.hideErrorBlock();
 
-			options = options || {};
+			var viewType = BX.prop.getString(options, 'viewType', 'info');
+			var title = BX.prop.getString(options, 'title', BX.message("JS_UI_VIEWER_ITEM_TRANSFORMATION_ERROR_1").replace('#DOWNLOAD_LINK#', item.getSrc()));
+			var description = BX.prop.getString(options, 'description', BX.message("JS_UI_VIEWER_ITEM_TRANSFORMATION_HINT"));
 
-			var title = options.title || BX.message('JS_UI_VIEWER_DEFAULT_ERROR_TITLE');
-			var description = options.description;
-
-			this.layout.error =  BX.create('div', {
+			this.layout.error = BX.create('div', {
 				props: {
 					className: 'ui-viewer-error'
 				},
@@ -571,15 +752,15 @@
 				children: [
 					BX.create('div', {
 						props: {
-							className: 'ui-viewer-error-title'
+							className: 'ui-viewer-' + viewType + '-title'
 						},
-						text: title
+						html: title
 					}),
 					BX.create('div', {
 						props: {
-							className: 'ui-viewer-error-text'
+							className: 'ui-viewer-' + viewType + '-text'
 						},
-						html: description || ''
+						html: description
 					})
 				]
 			});
@@ -593,7 +774,14 @@
 		convertItemActionsToPanelItems: function (item)
 		{
 			return item.getActions().map(function(action) {
-				if (BX.type.isFunction(action.action))
+				if (action.id === 'download' && action.href)
+				{
+					action.attributes = {
+						target: '_blank'
+					};
+				}
+
+				if (!action.href && BX.type.isFunction(action.action))
 				{
 					var fn = action.action;
 					action.onclick = function(event, panelItem) {
@@ -603,6 +791,33 @@
 
 				return action;
 			}, this);
+		},
+
+		/**
+		 * @param {String} link
+		 * @return {boolean}
+		 */
+		isExternalLink: function (link)
+		{
+			var isAbsoluteLink = new RegExp('^([a-z]+://|//)', 'i');
+			if (!isAbsoluteLink.test(link))
+			{
+				return false;
+			}
+
+			if (!BX.getClass('URL'))
+			{
+				return link.indexOf(location.hostname) === -1;
+			}
+
+			try
+			{
+				return (new URL(link)).hostname !== location.hostname;
+			}
+			catch(e)
+			{}
+
+			return true;
 		},
 
 		/**
@@ -658,8 +873,8 @@
 				if (!action.action && action.href)
 				{
 					action.action = function () {
-						document.location = action.href;
-					};
+						window.open(action.href, this.isExternalLink(action.href)? '_blank' : '_self');
+					}.bind(this);
 				}
 
 				if (BX.type.isArray(action.items))
@@ -734,6 +949,11 @@
 				this.layout.prev = BX.create('div', {
 					props: {
 						className: 'ui-viewer-prev'
+					},
+					events: {
+						mousewheel: function(event) {
+							this.handleMouseWheelOnControlButton(this.layout.prev, event);
+						}.bind(this)
 					}
 				})
 			}
@@ -748,13 +968,32 @@
 				this.layout.next = BX.create('div', {
 					props: {
 						className: 'ui-viewer-next'
+					},
+					events: {
+						mousewheel: function(event) {
+							this.handleMouseWheelOnControlButton(this.layout.next, event);
+						}.bind(this)
 					}
 				});
 			}
 
 			return this.layout.next;
 		},
-		
+
+		handleMouseWheelOnControlButton: function(controlNode, event)
+		{
+			if (this._timeoutIdMouseWheel)
+			{
+				clearTimeout(this._timeoutIdMouseWheel);
+			}
+
+			controlNode.style.pointerEvents = 'none';
+
+			this._timeoutIdMouseWheel = setTimeout(function() {
+				controlNode.style.pointerEvents = null;
+			}, 50);
+		},
+
 		getCloseButton: function()
 		{
 			if (!this.layout.close)
@@ -775,11 +1014,76 @@
 			return this._isOpen;
 		},
 
+		getScrollWidth: function()
+		{
+			var div = BX.create('div', {
+				style: {
+					overflow: 'scroll',
+					width: '50px',
+					height: '50px',
+					visibility: 'hidden'
+				}
+			});
+
+			document.body.appendChild(div);
+			var scrollWidth = div.offsetWidth - div.clientWidth;
+			document.body.removeChild(div);
+
+			return scrollWidth;
+		},
+
+		addBodyPadding: function()
+		{
+			if (BX.getClass('BXIM.messenger.popupMessenger'))
+			{
+				return;
+			}
+
+			var padding = this.getScrollWidth() + 'px';
+			var imBar = document.getElementById('bx-im-bar');
+			var helpBlock = document.getElementById('bx-help-block');
+
+			document.body.style.paddingRight = padding;
+
+			if(imBar)
+			{
+				imBar.style.borderRight = padding + ' solid rgb(238, 242, 244)';
+			}
+
+			if(helpBlock)
+			{
+				helpBlock.style.borderRight  = padding + ' solid rgb(238, 242, 244)';
+				helpBlock.style.right = '-' + padding;
+			}
+		},
+
+		removeBodyPadding: function()
+		{
+			var padding = '';
+			var imBar = document.getElementById('bx-im-bar');
+			var helpBlock = document.getElementById('bx-help-block');
+
+			document.body.style.paddingRight = padding;
+
+			if(imBar)
+			{
+				imBar.style.borderRight = padding;
+			}
+
+			if(helpBlock)
+			{
+				helpBlock.style.borderRight  = padding;
+				helpBlock.style.right = padding;
+			}
+		},
+
 		open: function(index)
 		{
+			this.addBodyPadding();
 			this.adjustZindex();
 
 			document.body.appendChild(this.getViewerContainer());
+
 			this.show(index);
 			this.showPanel();
 
@@ -813,6 +1117,18 @@
 
 		hideCurrentItem: function()
 		{
+			if (this.getCurrentItem())
+			{
+				var classList = this.layout.container.classList;
+				var containerModifiers = this.getCurrentItem().listContainerModifiers();
+				if (containerModifiers.length)
+				{
+					classList.remove.apply(classList, containerModifiers);
+				}
+
+				this.getCurrentItem().beforeHide();
+			}
+
 			BX.cleanNode(this.layout.itemContainer);
 		},
 
@@ -930,6 +1246,7 @@
 			BX.onCustomEvent('BX.UI.Viewer.Controller:onClose', [this]);
 
 			BX.addClass(this.layout.container, 'ui-viewer-hide');
+			this.hideCurrentItem();
 
 			BX.bind(this.layout.container, 'transitionend', function()
 			{
@@ -939,6 +1256,8 @@
 				this.actionPanel.hidePanel();
 				this.unLockScroll();
 				this.unbindEvents();
+				this.removeBodyPadding();
+				this.disableReadingMode();
 			}.bind(this));
 
 			// this.items = null;
@@ -1084,6 +1403,11 @@
 				return false;
 			}
 
+			if (BX.getClass('BXIM.messenger') && BXIM.messenger.popupMessenger)
+			{
+				return true;
+			}
+
 			if (!BX.getClass('BX.SidePanel.Instance') || !BX.SidePanel.Instance.getTopSlider())
 			{
 				return true;
@@ -1099,20 +1423,21 @@
 				return;
 			}
 
+			if (event.metaKey)
+			{
+				return;
+			}
+
 			switch (event.code)
 			{
 				case 'Space':
 				case 'ArrowRight':
-				case 'PageDown':
-				case 'ArrowDown':
 					this.showNext();
 					event.preventDefault();
 					event.stopPropagation();
 
 					break;
 				case 'ArrowLeft':
-				case 'PageUp':
-				case 'ArrowUp':
 					this.showPrev();
 					event.preventDefault();
 					event.stopPropagation();
@@ -1121,9 +1446,12 @@
 				case 'Escape':
 					this.close();
 					event.preventDefault();
+					event.stopPropagation();
 
 					break;
 			}
+
+			this.getCurrentItem().handleKeyPress(event);
 		},
 
 		setOptionsByGroup: function (groupBy, options)
@@ -1131,6 +1459,30 @@
 			this.optionsByGroup[groupBy] = options;
 
 			return this;
+		},
+
+		getCachedData: function(id)
+		{
+			return this.cachedData[id];
+		},
+
+		setCachedData: function(id, data)
+		{
+			this.cachedData[id] = data;
+		},
+
+		unsetCachedData: function(id)
+		{
+			this.cachedData[id] = null;
+		},
+
+		/**
+		 * @param {String} type
+		 * @param {String} className
+		 */
+		addType: function (type, className)
+		{
+			return BX.UI.Viewer.addType(type, className);
 		}
 	};
 
@@ -1148,8 +1500,8 @@
 			throw new Error("BX.UI.Viewer.buildItemByTypeAndNode: 'item' has to be instance of BX.UI.Viewer.Item.");
 		}
 
-		item.setPropertiesByNode(node);
 		item.bindSourceNode(node);
+		item.setPropertiesByNode(node);
 		item.setActions(BX.UI.Viewer.Instance.refineItemActions(item));
 
 		return item;
@@ -1172,31 +1524,51 @@
 			typeCode = 'image';
 		}
 
-		switch (typeCode)
+		BX.UI.Viewer.triggerEventToFindTypeClass(typeCode);
+
+		var className = types[typeCode];
+		if (className)
 		{
-			case 'image':
-				return BX.UI.Viewer.buildItemByTypeAndNode(BX.UI.Viewer.Image, node);
-			case 'plainText':
-				return BX.UI.Viewer.buildItemByTypeAndNode(BX.UI.Viewer.PlainText, node);
-			case 'unknown':
-				return BX.UI.Viewer.buildItemByTypeAndNode(BX.UI.Viewer.Unknown, node);
-			case 'video':
-				return BX.UI.Viewer.buildItemByTypeAndNode(BX.UI.Viewer.Video, node);
-			case 'document':
-				return BX.UI.Viewer.buildItemByTypeAndNode(BX.UI.Viewer.Document, node);
+			return BX.UI.Viewer.buildItemByTypeAndNode(BX.getClass(className), node);
 		}
 
-		if (!node.dataset.viewerTypeClass)
+		if (node.dataset.viewerTypeClass)
 		{
-			throw new Error("BX.UI.Viewer.buildItemByNode: there is no data-viewer-type or data-viewer-type-class");
+			if (!BX.getClass(node.dataset.viewerTypeClass))
+			{
+				throw new Error("BX.UI.Viewer.buildItemByNode: could not find class " + node.dataset.viewerTypeClass);
+			}
+
+			return BX.UI.Viewer.buildItemByTypeAndNode(BX.getClass(node.dataset.viewerTypeClass), node);
 		}
 
-		if (!BX.getClass(node.dataset.viewerTypeClass))
-		{
-			throw new Error("BX.UI.Viewer.buildItemByNode: could not find class " + node.dataset.viewerTypeClass);
-		}
+		console.warn("BX.UI.Viewer.buildItemByNode: could not find class to build type {" + typeCode + "}");
 
-		return BX.UI.Viewer.buildItemByTypeAndNode(BX.getClass(node.dataset.viewerTypeClass), node);
+		return BX.UI.Viewer.buildItemByTypeAndNode(BX.getClass(types.unknown), node);
+	};
+
+	var types = {
+		image: 'BX.UI.Viewer.Image',
+		plainText: 'BX.UI.Viewer.PlainText',
+		unknown: 'BX.UI.Viewer.Unknown',
+		video: 'BX.UI.Viewer.Video',
+		audio: 'BX.UI.Viewer.Audio',
+		document: 'BX.UI.Viewer.Document',
+		code: 'BX.UI.Viewer.HightlightCode'
+	};
+
+	/**
+	 * @param {String} type
+	 * @param {String} className
+	 */
+	BX.UI.Viewer.addType = function (type, className)
+	{
+		types[type] = className;
+	};
+
+	BX.UI.Viewer.triggerEventToFindTypeClass = function (type)
+	{
+		BX.onCustomEvent('BX.UI.Viewer.Controller:onFindType', [BX.UI.Viewer.Instance, type]);
 	};
 
 	/**

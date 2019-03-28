@@ -1,5 +1,14 @@
 ;(function()
 {
+	/**
+	 * Bitrix Push & Pull
+	 * Pull client
+	 *
+	 * @package bitrix
+	 * @subpackage pull
+	 * @copyright 2001-2019 Bitrix
+	 */
+
 	/****************** ATTENTION *******************************
 	 * Please do not use Bitrix CoreJS in this class.
 	 * This class can be called on page without Bitrix Framework
@@ -81,6 +90,8 @@
 		params = params || {};
 
 		var self = this;
+
+		this.context = 'master';
 
 		this.userId = params.userId? params.userId: (typeof BX.message !== 'undefined' && BX.message.USER_ID? BX.message.USER_ID: 0);
 		this.siteId = params.siteId? params.siteId: (typeof BX.message !== 'undefined' && BX.message.SITE_ID? BX.message.SITE_ID: 'none');
@@ -173,8 +184,26 @@
 	 */
 	Pull.prototype.subscribe = function(params)
 	{
+		/**
+		 * After modify this method, copy to follow scripts:
+		 * mobile/install/mobileapp/mobile/extensions/bitrix/pull/events/extension.js
+		 * mobile/install/js/mobile/pull/events/mobile.pull.events.js
+		 */
+
+		if (!params)
+		{
+			console.error(Utils.getDateForLog() + ': Pull.subscribe: params for subscribe function is invalid. ');
+			return function(){}
+		}
+
+		if (!Utils.isPlainObject(params))
+		{
+			return this.attachCommandHandler(params);
+		}
+
 		params = params || {};
 		params.type = params.type || SubscriptionType.Server;
+		params.command = params.command || null;
 
 		if (params.type == SubscriptionType.Server || params.type == SubscriptionType.Client)
 		{
@@ -184,16 +213,37 @@
 			}
 			if (typeof (this._subscribers[params.type][params.moduleId]) === 'undefined')
 			{
-				this._subscribers[params.type][params.moduleId] = [];
+				this._subscribers[params.type][params.moduleId] = {
+					'callbacks': [],
+					'commands': {},
+				};
 			}
 
-			this._subscribers[params.type][params.moduleId].push(params.callback);
+			if (params.command)
+			{
+				if (typeof (this._subscribers[params.type][params.moduleId]['commands'][params.command]) === 'undefined')
+				{
+					this._subscribers[params.type][params.moduleId]['commands'][params.command] = [];
+				}
 
-			return function () {
-				this._subscribers[params.type][params.moduleId] = this._subscribers[params.type][params.moduleId].filter(function(element) {
-					return element !== params.callback;
-				});
-			}.bind(this);
+				this._subscribers[params.type][params.moduleId]['commands'][params.command].push(params.callback);
+
+				return function () {
+					this._subscribers[params.type][params.moduleId]['commands'][params.command] = this._subscribers[params.type][params.moduleId]['commands'][params.command].filter(function(element) {
+						return element !== params.callback;
+					});
+				}.bind(this);
+			}
+			else
+			{
+				this._subscribers[params.type][params.moduleId]['callbacks'].push(params.callback);
+
+				return function () {
+					this._subscribers[params.type][params.moduleId]['callbacks'] = this._subscribers[params.type][params.moduleId]['callbacks'].filter(function(element) {
+						return element !== params.callback;
+					});
+				}.bind(this);
+			}
 		}
 		else
 		{
@@ -212,13 +262,84 @@
 		}
 	};
 
+	Pull.prototype.attachCommandHandler = function(handler)
+	{
+		/**
+		 * After modify this method, copy to follow scripts:
+		 * mobile/install/mobileapp/mobile/extensions/bitrix/pull/client/extension.js
+		 */
+		if (typeof handler.getModuleId !== 'function' || typeof handler.getModuleId() !== 'string')
+		{
+			console.error(Utils.getDateForLog() + ': Pull.attachCommandHandler: result of handler.getModuleId() is not a string.');
+			return function(){}
+		}
+
+		var type = SubscriptionType.Server;
+		if (typeof handler.getSubscriptionType === 'function')
+		{
+			type = handler.getSubscriptionType();
+		}
+
+		this.subscribe({
+			type: type,
+			moduleId: handler.getModuleId(),
+			callback: function(data)
+			{
+				var method = null;
+
+				if (typeof handler.getMap === 'function')
+				{
+					var mapping = handler.getMap();
+					if (mapping && typeof mapping === 'object')
+					{
+						if (typeof mapping[data.command] === 'function')
+						{
+							method = mapping[data.command].bind(handler)
+						}
+						else if (typeof mapping[data.command] === 'string' && typeof handler[mapping[data.command]] === 'function')
+						{
+							method = handler[mapping[data.command]].bind(handler);
+						}
+					}
+				}
+
+				if (!method)
+				{
+					var methodName = 'handle'+data.command.charAt(0).toUpperCase() + data.command.slice(1);
+					if (typeof handler[methodName] === 'function')
+					{
+						method = handler[methodName].bind(handler);
+					}
+				}
+
+				if (method)
+				{
+					if (this.debug && this.context !== 'master')
+					{
+						console.warn(Utils.getDateForLog() + ': Pull.attachCommandHandler: receive command', data);
+					}
+					method(data.params, data.extra, data.command);
+				}
+				else if (this.debug)
+				{
+					console.warn(Utils.getDateForLog() + ': Pull.attachCommandHandler: command is not implemented, try send to callback.', data);
+				}
+			}.bind(this)
+		});
+	};
+
 	/**
 	 *
 	 * @param params {Object}
 	 * @returns {boolean}
 	 */
-	Pull.prototype.sendEvent = function(params)
+	Pull.prototype.emit = function(params)
 	{
+		/**
+		 * After modify this method, copy to follow scripts:
+		 * mobile/install/mobileapp/mobile/extensions/bitrix/pull/events/extension.js
+		 * mobile/install/js/mobile/pull/events/mobile.pull.events.js
+		 */
 		params = params || {};
 
 		if (params.type == SubscriptionType.Server || params.type == SubscriptionType.Client)
@@ -229,17 +350,29 @@
 			}
 			if (typeof (this._subscribers[params.type][params.moduleId]) === 'undefined')
 			{
-				this._subscribers[params.type][params.moduleId] = [];
+				this._subscribers[params.type][params.moduleId] = {
+					'callbacks': [],
+					'commands': {},
+				};
 			}
 
-			if (this._subscribers[params.type][params.moduleId].length <= 0)
+			if (this._subscribers[params.type][params.moduleId]['callbacks'].length > 0)
 			{
-				return true;
+				this._subscribers[params.type][params.moduleId]['callbacks'].forEach(function(callback){
+					callback(params.data, {type: params.type, moduleId: params.moduleId});
+				});
 			}
 
-			this._subscribers[params.type][params.moduleId].forEach(function(callback){
-				callback(params.data);
-			});
+			if (
+				this._subscribers[params.type][params.moduleId]['commands'][params.data.command]
+				&& this._subscribers[params.type][params.moduleId]['commands'][params.data.command].length > 0)
+			{
+				this._subscribers[params.type][params.moduleId]['commands'][params.data.command].forEach(function(callback){
+					callback(params.data.params, params.data.extra, params.data.command, {type: params.type, moduleId: params.moduleId});
+				});
+			}
+
+			return true;
 		}
 		else
 		{
@@ -254,11 +387,11 @@
 			}
 
 			this._subscribers[params.type].forEach(function(callback){
-				callback(params.data);
+				callback(params.data, {type: params.type});
 			});
-		}
 
-		return true;
+			return true;
+		}
 	};
 
 	Pull.prototype.init = function()
@@ -1028,7 +1161,7 @@
 						BX.onCustomEvent(window, 'onPullClientEvent', [moduleId, command, message.params, message.extra], true);
 					}
 
-					this.sendEvent({
+					this.emit({
 						type: SubscriptionType.Client,
 						moduleId: moduleId,
 						data: {
@@ -1051,7 +1184,7 @@
 							BX.onCustomEvent(window, 'onPullOnlineEvent', [command, message.params, message.extra], true);
 						}
 
-						this.sendEvent({
+						this.emit({
 							type: SubscriptionType.Online,
 							data: {
 								command: command,
@@ -1069,7 +1202,7 @@
 						BX.onCustomEvent(window, 'onPullEvent', [moduleId, command, message.params, message.extra], true);
 					}
 
-					this.sendEvent({
+					this.emit({
 						type: SubscriptionType.Server,
 						moduleId: moduleId,
 						data: {
@@ -1358,7 +1491,7 @@
 				BX.onCustomEvent(window, 'onPullRevisionUp', [serverRevision, REVISION]);
 			}
 
-			this.sendEvent({
+			this.emit({
 				type: SubscriptionType.Revision,
 				data: {
 					server: serverRevision,
@@ -1609,7 +1742,7 @@
 			BX.onCustomEvent(window, 'onPullStatus', [status]);
 		}
 
-		this.sendEvent({
+		this.emit({
 			type: SubscriptionType.Status,
 			data: {
 				status: status
