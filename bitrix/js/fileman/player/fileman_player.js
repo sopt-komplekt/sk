@@ -456,6 +456,7 @@ BX.Fileman.Player.prototype.fillParameters = function(params)
 	}
 	this.width = params.width;
 	this.height = params.height;
+	this.duration = params.duration || null;
 	this.params = params;
 	this.active = this.isPlayed();
 };
@@ -550,6 +551,13 @@ BX.Fileman.Player.prototype.init = function()
 			playButton.addEventListener('click', BX.proxy(this.onClick, this));
 		}
 		this.vjsPlayer.volume(this.volume);
+		if(this.duration > 0)
+		{
+			this.vjsPlayer.one('loadedmetadata', BX.proxy(function()
+			{
+				this.vjsPlayer.duration(this.duration);
+			}, this));
+		}
 		this.vjsPlayer.one('play', BX.proxy(function()
 		{
 			if(this.playbackRate != 1)
@@ -581,6 +589,10 @@ BX.Fileman.Player.prototype.init = function()
 
 				}
 			}
+			this.vjsPlayer.on('volumechange', BX.proxy(function()
+			{
+				this.active = true;
+			}, this));
 		}, this));
 		if(this.playlistParams)
 		{
@@ -597,7 +609,7 @@ BX.Fileman.Player.prototype.init = function()
 		}
 		this.fireEvent('onAfterInit');
 		this.proxyEvents();
-		if(this.autostart)
+		if(this.autostart && !this.lazyload)
 		{
 			setTimeout(BX.proxy(function()
 			{

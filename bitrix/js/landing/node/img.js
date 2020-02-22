@@ -20,6 +20,7 @@
 	BX.Landing.Block.Node.Img = function(options)
 	{
 		BX.Landing.Block.Node.apply(this, arguments);
+		this.type = "img";
 		this.editPanel = null;
 		this.lastValue = null;
 		this.field = null;
@@ -32,7 +33,7 @@
 
 		if (this.isAllowInlineEdit())
 		{
-			this.node.setAttribute("title", BX.message("LANDING_TITLE_OF_IMAGE_NODE"));
+			this.node.setAttribute("title", BX.Landing.Loc.getMessage("LANDING_TITLE_OF_IMAGE_NODE"));
 		}
 	};
 
@@ -78,11 +79,15 @@
 	function getBackgroundUrl(node)
 	{
 		var style = node.node.getAttribute('style');
-		var res = style.split(";")[0].match(/url\((.*)\)/);
 
-		if (res && res[1])
+		if (style)
 		{
-			return res[1].replace(/["|']/g, "");
+			var res = style.split(";")[0].match(/url\((.*?)\)/);
+
+			if (res && res[1])
+			{
+				return res[1].replace(/["|']/g, "");
+			}
 		}
 
 		return "";
@@ -96,11 +101,15 @@
 	function getBackgroundUrl2x(node)
 	{
 		var style = node.node.getAttribute('style');
-		var res = style.match(/1x, url\(["|'](.*)["|']\) 2x\); /);
 
-		if (res && res[1])
+		if (style)
 		{
-			return res[1].replace(/["|']/g, "");
+			var res = style.match(/1x, url\(["|'](.*)["|']\) 2x\); /);
+
+			if (res && res[1])
+			{
+				return res[1].replace(/["|']/g, "");
+			}
 		}
 
 		return "";
@@ -194,7 +203,7 @@
 			node.node.alt = value.alt;
 			node.node.dataset.fileid = value.id || -1;
 			node.node.srcset = value.src2x ? value.src2x + " 2x" : "";
-			node.node.dataset.fileid2x = value.fileid2x || -1;
+			node.node.dataset.fileid2x = value.id2x || -1;
 		}
 	}
 
@@ -221,17 +230,27 @@
 		}
 		else
 		{
-			node.node.style.backgroundImage = "url(\""+value.src+"\")";
-
-			if (value.src2x)
+			if (value.src)
 			{
-				var style = [
-					"background-image: url(\""+value.src+"\");",
-					"background-image: -webkit-image-set(url(\""+value.src+"\") 1x, url(\""+value.src2x+"\") 2x);",
-					"background-image: image-set(url(\""+value.src+"\") 1x, url(\""+value.src2x+"\") 2x);"
-				].join(' ');
+				node.node.style.backgroundImage = "url(\""+value.src+"\")";
 
-				node.node.setAttribute("style", style);
+				if (value.src2x)
+				{
+					var style = [
+						"background-image: url(\""+value.src+"\");",
+						"background-image: -webkit-image-set(url(\""+value.src+"\") 1x, url(\""+value.src2x+"\") 2x);",
+						"background-image: image-set(url(\""+value.src+"\") 1x, url(\""+value.src2x+"\") 2x);"
+					].join(' ');
+
+					node.node.setAttribute("style", style);
+				}
+			}
+			else
+			{
+				if (node.node.style)
+				{
+					node.node.style.removeProperty("background-image");
+				}
 			}
 
 			node.node.dataset.fileid = value.id || -1;
@@ -267,20 +286,20 @@
 				if (!this.editPanel)
 				{
 					this.editPanel = new BX.Landing.UI.Panel.Content(this.selector, {
-						title: BX.message("LANDING_IMAGE_PANEL_TITLE"),
+						title: BX.Landing.Loc.getMessage("LANDING_IMAGE_PANEL_TITLE"),
 						className: "landing-ui-panel-edit-image"
 					});
 
 					this.editPanel.appendFooterButton(
 						new BX.Landing.UI.Button.BaseButton("save_block_content", {
-							text: BX.message("BLOCK_SAVE"),
+							text: BX.Landing.Loc.getMessage("BLOCK_SAVE"),
 							onClick: this.save.bind(this),
 							className: "landing-ui-button-content-save"
 						})
 					);
 					this.editPanel.appendFooterButton(
 						new BX.Landing.UI.Button.BaseButton("cancel_block_content", {
-							text: BX.message("BLOCK_CANCEL"),
+							text: BX.Landing.Loc.getMessage("BLOCK_CANCEL"),
 							onClick: this.editPanel.hide.bind(this.editPanel),
 							className: "landing-ui-button-content-cancel"
 						})
@@ -296,7 +315,6 @@
 				this.editPanel.appendForm(form);
 				this.editPanel.show();
 				BX.Landing.UI.Panel.EditorPanel.getInstance().hide();
-				BX.Landing.UI.Panel.SmallEditorPanel.getInstance().hide();
 			}
 		},
 
@@ -329,9 +347,36 @@
 
 				if (this.manifest.dimensions)
 				{
-					description = BX.message("LANDING_CONTENT_IMAGE_RECOMMENDED_SIZE") + " ";
-					description += this.manifest.dimensions.width + "px&nbsp;/&nbsp;";
-					description += this.manifest.dimensions.height + "px";
+					var dimensions = this.manifest.dimensions;
+
+					var width = (
+						dimensions.width
+						|| dimensions.maxWidth
+						|| dimensions.minWidth
+					);
+
+					var height = (
+						dimensions.height
+						|| dimensions.maxHeight
+						|| dimensions.minHeight
+					);
+
+					if (width && !height)
+					{
+						description = BX.Landing.Loc.getMessage('LANDING_CONTENT_IMAGE_RECOMMENDED_WIDTH') + ' ';
+						description += width + 'px';
+					}
+					else if (height && !width)
+					{
+						description = BX.Landing.Loc.getMessage('LANDING_CONTENT_IMAGE_RECOMMENDED_HEIGHT') + ' ';
+						description += height + 'px';
+					}
+					else if (width && height)
+					{
+						description = BX.Landing.Loc.getMessage("LANDING_CONTENT_IMAGE_RECOMMENDED_SIZE") + " ";
+						description += width + "px&nbsp;/&nbsp;";
+						description += height + "px";
+					}
 				}
 
 				var value = this.getValue();

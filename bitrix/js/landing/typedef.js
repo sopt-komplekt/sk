@@ -8,6 +8,7 @@
  * @property {number} lid
  * @property {?object} requiredUserAction
  * @property {string|number} anchor
+ * @property {?object} dynamicParams
  */
 
 /**
@@ -33,7 +34,8 @@
  * @property {string} [group]
  * @property {object} [extend]
  * @property {string[]} [extend.attrs]
- * @property {imageDimensions} dimensions
+ * @property {imageDimensions} [dimensions]
+ * @property {boolean} [allowFormEdit = false]
  */
 
 /**

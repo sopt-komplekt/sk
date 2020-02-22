@@ -9304,6 +9304,9 @@ var Player = function (_Component) {
     if (_this.isAudio()) {
       _this.addClass('vjs-audio');
     }
+    else {
+      _this.addClass('vjs-video');
+    }
 
     if (_this.flexNotSupported_()) {
       _this.addClass('vjs-no-flex');

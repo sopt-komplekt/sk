@@ -24,6 +24,11 @@
 				renderer = this.getRenderFunctionName(property),
 				needInit = true;
 
+			if (BX.type.isString(documentType))
+			{
+				documentType = documentType.split('@');
+			}
+
 			if (renderer)
 			{
 				if (isMultiple(property) && property.Type !== 'select')
@@ -78,7 +83,8 @@
 						'rnd' : Math.random(),
 						'Mode' : '',
 						'Func' : '',
-						'sessid' : BX.bitrix_sessid()
+						'sessid' : BX.bitrix_sessid(),
+						'RenderMode': 'public'
 					},
 					function(v) {
 						if (v)
@@ -111,7 +117,20 @@
 
 				case 'select':
 				case 'internalselect':
-					result = property['Options'][value];
+					if (BX.type.isArray(value))
+					{
+						result = [];
+						value.forEach(function(v)
+						{
+							result.push(property['Options'][v]);
+						});
+						result = result.join(', ');
+					}
+					else
+					{
+						result = property['Options'][value];
+					}
+
 					break;
 
 				case 'date':
@@ -166,6 +185,7 @@
 			var renderer;
 			switch (property['Type'])
 			{
+				case 'B':
 				case 'bool':
 				case 'UF:boolean':
 					renderer = 'createBoolNode';
@@ -174,27 +194,34 @@
 				case 'date':
 				case 'UF:date':
 				case 'datetime':
+				case 'S:Date':
+				case 'S:DateTime':
 					renderer = 'createDateNode';
 					break;
 
+				case 'L':
 				case 'select':
 				case 'internalselect':
 					renderer = 'createSelectNode';
 					break;
 
+				case 'T':
 				case 'text':
 					renderer = 'createTextNode';
 					break;
 
+				case 'N':
 				case 'int':
 				case 'double':
 					renderer = 'createNumericNode';
 					break;
 
+				case 'S':
 				case 'string':
 					renderer = 'createStringNode';
 					break;
 
+				case 'F':
 				case 'file':
 					renderer = 'createFileNode';
 					break;
@@ -214,7 +241,7 @@
 					click: function(event)
 					{
 						event.preventDefault();
-						FieldType.cloneControl(property.Type, fieldName, this.parentNode)
+						FieldType.cloneControl(property, fieldName, this.parentNode)
 					}
 				}
 			});
@@ -290,9 +317,13 @@
 		createDateNode: function(property, fieldName, value)
 		{
 			var type = property['Type'];
-			if (type === 'UF:date')
+			if (type === 'UF:date' || type === 'S:Date')
 			{
 				type = 'date';
+			}
+			if (type === 'S:DateTime')
+			{
+				type = 'datetime';
 			}
 
 			var input = BX.create('input', {
@@ -300,8 +331,7 @@
 					className: 'bizproc-type-control bizproc-type-control-' + type
 						+ (isMultiple(property) ? ' bizproc-type-control-multiple' : ''),
 					'data-role': 'inline-selector-target',
-					'data-selector-type': type,
-					'data-selector-write-mode' : 'replace'
+					'data-selector-type': type
 				},
 				props: {
 					type: 'text',
@@ -333,7 +363,30 @@
 					}
 				});
 
-				return BX.create('div', {children: [input, img]});
+				var lc;
+
+				if (property['Settings'] && property['Settings']['timezones'])
+				{
+					lc = BX.create('select', {
+						props: {name: 'tz_' + (fieldName + (isMultiple(property) ? '[]' : ''))},
+						attrs: {className: 'bizproc-type-control-date-lc'}
+					});
+
+					property['Settings']['timezones'].forEach(function(zone)
+					{
+						var option = BX.create('option', {
+							props: {value: zone.value},
+							text: zone.text
+						});
+						if (zone.value === 'current')
+						{
+							option.setAttribute('selected', 'selected');
+						}
+						lc.appendChild(option);
+					});
+				}
+
+				return BX.create('div', {children: [input, img, lc]});
 			}
 
 			return input;
@@ -370,45 +423,60 @@
 		},
 		createFileNode: function(property, fieldName, value)
 		{
-			var input = BX.create('input', {
+			var dlg = BX.Bizproc.Automation && BX.Bizproc.Automation.Designer.getRobotSettingsDialog();
+			if (!dlg)
+			{
+				var input = BX.create('input', {
+					props: {
+						type: 'file',
+						name: fieldName + (isMultiple(property) ? '[]' : ''),
+						value: (value || '')
+					},
+					events: {
+						change: function()
+						{
+							this.nextSibling.textContent = BX.Bizproc.FieldType.File.parseLabel(this.value);
+						}
+					}
+				});
+
+				var buttonWrapper = BX.create('span', {
+					children: [BX.create('span', {
+						attrs: {
+							className: 'webform-small-button'
+						},
+						text: BX.message('BIZPROC_JS_BP_FIELD_TYPE_CHOOSE_FILE')
+					})]
+				});
+
+				return BX.create('div', {
+					children: [
+						buttonWrapper,
+						input,
+						BX.create('span', {
+							attrs: {
+								className: 'bizproc-type-control-file-label'
+							}
+						})
+					],
+					attrs: {
+						className: 'bizproc-type-control bizproc-type-control-file'
+							+ (isMultiple(property) ? ' bizproc-type-control-multiple' : '')
+					}
+				});
+			}
+
+			return BX.create('input', {
+				attrs: {
+					className: 'bizproc-type-control bizproc-type-control-file-selectable'
+						+ (isMultiple(property) ? ' bizproc-type-control-multiple' : ''),
+					'data-role': 'inline-selector-target',
+					'data-selector-type': 'file'
+				},
 				props: {
-					type: 'file',
+					type: 'text',
 					name: fieldName + (isMultiple(property) ? '[]' : ''),
 					value: (value || '')
-				},
-				events: {
-					change: function()
-					{
-						this.nextSibling.textContent = BX.Bizproc.FieldType.File.parseLabel(this.value);
-					}
-				}
-			});
-
-			var buttonWrapper = BX.create('span', {
-				attrs: {
-					className: 'bizproc-modern-type-control-button'
-				},
-				children: [BX.create('span', {
-					attrs: {
-						className: 'webform-small-button'
-					},
-					text: BX.message('BIZPROC_JS_BP_FIELD_TYPE_CHOOSE_FILE')
-				})]
-			});
-
-			return BX.create('div', {
-				children: [
-					buttonWrapper,
-					input,
-					BX.create('span', {
-						attrs: {
-							className: 'bizproc-modern-type-control-file-value-name'
-						}
-					})
-				],
-				attrs: {
-					className: 'bizproc-type-control bizproc-type-control-file'
-						+ (isMultiple(property) ? ' bizproc-type-control-multiple' : '')
 				}
 			});
 		},
@@ -511,19 +579,27 @@
 		},
 		initControl: function(controlNode)
 		{
-			var dlg = BX.Bizproc.Automation && BX.Bizproc.Automation.Designer.getRobotSettingsDialog();
-			if (dlg)
+			var dlg;
+			if (dlg = BX.Bizproc.Automation && BX.Bizproc.Automation.Designer.getRobotSettingsDialog())
 			{
 				dlg.template.initRobotSettingsControls(dlg.robot, controlNode);
+			}
+			else if (dlg = BX.Bizproc.Automation && BX.Bizproc.Automation.Designer.getTriggerSettingsDialog())
+			{
+				dlg.component.triggerManager.initSettingsDialogControls(controlNode);
 			}
 		},
 		getDocumentFields: function()
 		{
 			var fields = [];
 			var dlg = BX.Bizproc.Automation && BX.Bizproc.Automation.Designer.getRobotSettingsDialog();
-			if (dlg)
+			if (dlg && dlg.robot.component)
 			{
 				fields = dlg.robot.component.data['DOCUMENT_FIELDS'];
+			}
+			if (!fields.length && BX.Bizproc.Automation && BX.Bizproc.Automation.API.documentFields)
+			{
+				fields = BX.Bizproc.Automation.API.documentFields;
 			}
 
 			return fields;

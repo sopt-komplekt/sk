@@ -315,9 +315,21 @@
 							{
 								app.titleAction("hide")
 							},
-							setImage: function (imageUrl)
+							setImage: function (imageUrl, color)
 							{
 								this.params.imageUrl = imageUrl;
+
+								if (color)
+								{
+									this.params.imageColor = color || '';
+								}
+
+								this.redraw();
+							},
+							setImageColor: function (color)
+							{
+								this.params.imageColor = color || '';
+
 								this.redraw();
 							},
 							setText: function (text)
@@ -328,6 +340,11 @@
 							setDetailText: function (text)
 							{
 								this.params.detailText = text;
+								this.redraw();
+							},
+							setUseLetterImage: function (flag)
+							{
+								this.params.useLetterImage = flag === true;
 								this.redraw();
 							},
 							setCallback: function (callback)
@@ -875,19 +892,22 @@
 				return false;
 			},
 			postToComponent: function (eventName, params, code)
-            {
-                if(app.enableInVersion(25))
-                {
-                    if (typeof(params) == "object")
-                        params = JSON.stringify(params);
-                    app.exec("fireEvent", {
-                        eventName: eventName,
-                        params: params,
-                        componentCode:code
-                    }, false);
+			{
+				if(app.enableInVersion(25))
+				{
+					if (typeof(params) == "object")
+					{
+						params = JSON.stringify(params);
+					}
 
-                    return true;
-                }
+					app.exec("fireEvent", {
+						eventName: eventName,
+						params: params,
+						componentCode:code
+					}, false);
+
+					return true;
+				}
 
 				return false;
             },
@@ -1319,8 +1339,30 @@
 	{
 		window.WebSocket = function(server)
 		{
+			var handlerAliases = {
+				open: "onopen",
+				close: "onclose",
+				error: "onerror",
+				message: "onmessage",
+			};
+
 			this.open =  BX.proxy(websocketPlugin.open, websocketPlugin);
 			this.close =  BX.proxy(websocketPlugin.close, websocketPlugin);
+			this.addEventListener = function(event, handler)
+			{
+				if(typeof handlerAliases[event] != undefined)
+				{
+					this[handlerAliases[event]] = handler;
+				}
+			};
+
+			this.removeEventListener = function(event, handler)
+			{
+				if(typeof handlerAliases[event] != undefined)
+				{
+					this[handlerAliases[event]] = nil;
+				}
+			};
 
 			var onSocketClosed = BX.proxy(function (data)
 			{
@@ -1362,6 +1404,8 @@
 				onerror:onSocketError
 			});
 		};
+
+
 	}
 
 

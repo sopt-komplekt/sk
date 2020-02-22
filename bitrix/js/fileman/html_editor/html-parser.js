@@ -508,9 +508,9 @@
 				return null;
 			}
 
-			if (nodeName == 'A')
+			if (nodeName === 'A')
 			{
-				// Todo: clean block nodes from link
+				BX.onCustomEvent(this.editor, 'OnAfterLinkInserted', [oldNode.getAttribute('href')]);
 			}
 
 			// Clean class

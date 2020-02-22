@@ -1,0 +1,109 @@
+Options -Indexes 
+ErrorDocument 404 /404.php
+
+<IfModule mod_php7.c>
+  php_flag session.use_trans_sid off
+  #php_flag allow_call_time_pass_reference 1
+  #php_value display_errors 1
+  php_value mbstring.func_overload 2
+  php_value mbstring.internal_encoding UTF-8
+  php_value max_input_vars 10000
+  php_value allow_url_fopen Off
+  php_value mail.add_x_header 0
+  php_value request_order GP
+  php_value auto_prepend_file "/home/r/rpilot/sopt-komplekt/public_html/bitrix/modules/security/tools/start.php"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  Options +FollowSymLinks
+
+  # Позволяет обрабатывать файлы txt как php код
+  #AddType application/x-httpd-php phtml php txt
+
+  RewriteEngine On
+
+  # Редирект с http на https
+  # Также надо переименовать ниже где встречается http
+  #RewriteCond %{SERVER_PORT} !^443$
+  #
+RewriteRule ^.*[-/]g(\d+)/?$ themeso/index\.php?id=$1&%{QUERY_STRING} [L]
+RewriteRule ^.*[-/]g(\d+)[-/].*$ themeso/index\.php?id=$1&%{QUERY_STRING} [L]
+RewriteRule ^g(\d+)[-/].*$ themeso/index\.php?id=$1&%{QUERY_STRING} [L]
+RewriteRule ^.*[-/]g(\d+)-.*$ themeso/index\.php?id=$1&%{QUERY_STRING} [L]
+RewriteRule ^g(\d+)-.*$ themeso/index\.php?id=$1&%{QUERY_STRING} [L]
+RewriteRule ^m(\d+)[-/].*[-/]g(\d+)[-/].*$ themeso/index\.php?id=$1-$2&%{QUERY_STRING} [L]
+RewriteRule ^m(\d+)[-/]g(\d+)[-/].*$ themeso/index\.php?id=$1-$2&%{QUERY_STRING} [L]
+RewriteRule ^g(\d+)[-/].*[-/]m(\d+)[-/].*$ themeso/index\.php?id=$2-$1&%{QUERY_STRING} [L]
+RewriteRule ^g(\d+)[-/]m(\d+)[-/].*$ themeso/index\.php?id=$2-$1&%{QUERY_STRING} [L]
+RewriteRule ^.*[-/]g(\d+)[-/]m(\d+)[-/].*$ themeso/index\.php?id=$2-$1&%{QUERY_STRING} [L]
+RewriteRule ^.*[-/]g(\d+)[-/].*[-/]m(\d+)[-/].*$ themeso/index\.php?id=$2-$1&%{QUERY_STRING} [L]
+RewriteRule ^.*[-/]m(\d+)[-/].*[-/]g(\d+)[-/].*$ themeso/index\.php?id=$1-$2&%{QUERY_STRING} [L]
+RewriteRule ^.*[-/]m(\d+)[-/]g(\d+)[-/].*$ themeso/index\.php?id=$1-$2&%{QUERY_STRING} [L]
+RewriteRule ^(.*)$ https://sitename.ru/$1 [R=301,L]
+  
+  # Редирект с www на без www
+  RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+  RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+  # Редирект с системных адресов на основной домен
+  #RewriteCond %{HTTP_HOST} ^00.00.00.00 [NC,OR]
+  #RewriteCond %{HTTP_HOST} ^sitename-1.ru [NC,OR]
+  #RewriteCond %{HTTP_HOST} ^sitename-2.ru [NC]
+  #RewriteRule (.*) http://sitename.ru/$1 [R=301,L]
+
+  # Редирект без www на с www
+  #RewriteCond %{HTTP_HOST} !^www\.(.*) [NC]
+  #RewriteRule ^(.*)$ http://www.%1/$1 [R=301,L]
+
+  # Редирект с /index.php на /
+  RewriteCond %{REQUEST_METHOD} =GET 
+  RewriteCond %{REQUEST_URI} ^(.*)/index.php$ 
+  RewriteRule ^(.*)$ http://%{HTTP_HOST}%1/ [R=301,L]
+
+  # Добавление / к запросу без точки в url
+  # Могут быть проблемы, зависит от настройки apache на хостинге
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} !(.*)/$
+  RewriteCond %{REQUEST_URI} !\.([^/]*)$
+  RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+  
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !/bitrix/urlrewrite.php$
+  RewriteRule ^(.*)$ /bitrix/urlrewrite.php [L]
+  RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization}]
+</IfModule>
+
+# Исключение из редиректа файла robots.txt
+<FilesMatch "robots.txt$">
+  RewriteEngine off
+</FilesMatch>
+# Исключение из редиректа файла 1c_exchange.php - обмен с 1С
+<FilesMatch "1c_exchange.php$">
+  RewriteEngine off
+</FilesMatch>
+# Исключение из редиректа файла yandex.php - выгрузка в яндекс
+# необходимо указато корректное имя файла
+<FilesMatch "yandex.php$">
+  RewriteEngine off
+</FilesMatch>
+
+<IfModule mod_dir.c>
+  DirectoryIndex index.php index.html
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive on
+  ExpiresDefault "access plus 3 months"
+  ExpiresByType image/jpeg "access plus 3 months"
+  ExpiresByType image/gif "access plus 3 months"
+  ExpiresByType image/png "access plus 3 months"
+  ExpiresByType text/css "access plus 3 months"
+  ExpiresByType application/javascript "access plus 3 months"  
+</IfModule>
+
+# Долгое кеширование файлов, повышает скорость отдачи
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf)$">
+  Header set Cache-Control "max-age=2592000"
+</FilesMatch>

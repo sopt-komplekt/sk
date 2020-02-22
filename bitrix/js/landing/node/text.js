@@ -22,6 +22,8 @@
 	{
 		BX.Landing.Block.Node.apply(this, arguments);
 
+		this.type = "text";
+
 		this.onClick = this.onClick.bind(this);
 		this.onPaste = this.onPaste.bind(this);
 		this.onDrop = this.onDrop.bind(this);
@@ -60,7 +62,7 @@
 		onAllowInlineEdit: function()
 		{
 			// Show title "Click to edit" for node
-			this.node.setAttribute("title", escapeText(BX.message("LANDING_TITLE_OF_TEXT_NODE")));
+			this.node.setAttribute("title", escapeText(BX.Landing.Loc.getMessage("LANDING_TITLE_OF_TEXT_NODE")));
 		},
 
 
@@ -159,25 +161,13 @@
 			if (event.clipboardData && event.clipboardData.getData)
 			{
 				text = event.clipboardData.getData("text/plain");
-
-				if (!this.manifest.textOnly)
-				{
-					text = text.replace(new RegExp('\n', 'g'), '<br>');
-				}
-
-				document.execCommand("insertHTML", false, text);
+				document.execCommand("insertHTML", false, BX.Landing.Utils.escapeHtml(text));
 			}
 			else
 			{
 				// ie11
 				text = window.clipboardData.getData("text");
-
-				if (!this.manifest.textOnly)
-				{
-					text = text.replace(new RegExp('\n', 'g'), '<br>');
-				}
-
-				document.execCommand("paste", true, text);
+				document.execCommand("paste", true, BX.Landing.Utils.escapeHtml(text));
 			}
 
 			this.onChange();
@@ -201,29 +191,31 @@
 
 		onMousedown: function(event)
 		{
-			this.fromNode = true;
-
-			if (this.manifest.allowInlineEdit !== false &&
-				BX.Landing.Main.getInstance().isControlsEnabled())
+			if (!this.manifest.group)
 			{
-				event.stopPropagation();
+				this.fromNode = true;
 
-				this.enableEdit();
-				BX.Landing.UI.Tool.ColorPicker.hideAll();
-				BX.Landing.UI.Button.FontAction.hideAll();
-			}
-
-			requestAnimationFrame(function() {
-				if (event.target.nodeName === "A" ||
-					event.target.parentElement.nodeName === "A")
+				if (this.manifest.allowInlineEdit !== false &&
+					BX.Landing.Main.getInstance().isControlsEnabled())
 				{
-					var range = document.createRange();
-					range.selectNode(event.target);
-					window.getSelection().removeAllRanges();
-					window.getSelection().addRange(range);
-				}
-			});
+					event.stopPropagation();
 
+					this.enableEdit();
+					BX.Landing.UI.Tool.ColorPicker.hideAll();
+					BX.Landing.UI.Button.FontAction.hideAll();
+				}
+
+				requestAnimationFrame(function() {
+					if (event.target.nodeName === "A" ||
+						event.target.parentElement.nodeName === "A")
+					{
+						var range = document.createRange();
+						range.selectNode(event.target);
+						window.getSelection().removeAllRanges();
+						window.getSelection().addRange(range);
+					}
+				});
+			}
 		},
 
 
@@ -289,11 +281,13 @@
 					this.getChangeTagButton().changeHandler = this.onChangeTag.bind(this);
 				}
 
-				BX.Landing.UI.Panel.EditorPanel.getInstance().show(this.node, null, buttons);
+				if (!this.manifest.textOnly)
+				{
+					BX.Landing.UI.Panel.EditorPanel.getInstance().show(this.node, null, buttons);
+				}
 
 				this.lastValue = this.getValue();
 				this.node.contentEditable = true;
-				this.node.focus();
 
 				this.node.setAttribute("title", "");
 			}
@@ -309,8 +303,8 @@
 			if (!this.designButton)
 			{
 				this.designButton = new BX.Landing.UI.Button.Design("design", {
-					html: BX.message("LANDING_TITLE_OF_EDITOR_ACTION_DESIGN"),
-					attrs: {title: BX.message("LANDING_TITLE_OF_EDITOR_ACTION_DESIGN")},
+					html: BX.Landing.Loc.getMessage("LANDING_TITLE_OF_EDITOR_ACTION_DESIGN"),
+					attrs: {title: BX.Landing.Loc.getMessage("LANDING_TITLE_OF_EDITOR_ACTION_DESIGN")},
 					onClick: function() {
 						BX.Landing.UI.Panel.EditorPanel.getInstance().hide();
 						this.disableEdit();
@@ -340,7 +334,7 @@
 
 				if (this.isAllowInlineEdit())
 				{
-					this.node.setAttribute("title", escapeText(BX.message("LANDING_TITLE_OF_TEXT_NODE")));
+					this.node.setAttribute("title", escapeText(BX.Landing.Loc.getMessage("LANDING_TITLE_OF_TEXT_NODE")));
 				}
 			}
 		},
@@ -420,13 +414,13 @@
 			if (!this.changeTagButton)
 			{
 				this.changeTagButton = new BX.Landing.UI.Button.ChangeTag("changeTag", {
-					html: this.node.nodeName,
-					attrs: {title: BX.message("LANDING_TITLE_OF_EDITOR_ACTION_CHANGE_TAG")},
+					html: "<span class=\"landing-ui-icon-editor-"+this.node.nodeName.toLowerCase()+"\"></span>",
+					attrs: {title: BX.Landing.Loc.getMessage("LANDING_TITLE_OF_EDITOR_ACTION_CHANGE_TAG")},
 					onChange: this.onChangeTag.bind(this)
 				});
 			}
 
-			this.changeTagButton.insertAfter = "strikeThrough";
+			this.changeTagButton.insertAfter = "unlink";
 
 			this.changeTagButton.activateItem(this.node.nodeName);
 
