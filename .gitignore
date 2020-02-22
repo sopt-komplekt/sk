@@ -1,6 +1,9 @@
 /bitrix/gadgets/
 /bitrix/images/
 /bitrix/js/
+/bitrix/css/
+/bitrix/image_uploader/
+bitrix/services/
 /bitrix/activities/
 /bitrix/tools/
 /bitrix/panel/
