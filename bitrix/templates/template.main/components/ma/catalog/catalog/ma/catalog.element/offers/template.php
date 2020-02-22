@@ -337,6 +337,11 @@ $haveOffers = !empty($arResult['OFFERS']);
 
 	</div>
 
+    <? if ($arResult['PREVIEW_TEXT']): ?>
+        <div class="b-catalog-detail_preview-text">
+            <? echo $arResult['PREVIEW_TEXT_TYPE'] === 'html' ? $arResult['PREVIEW_TEXT'] : '<p>'.$arResult['PREVIEW_TEXT'].'</p>'; ?>
+        </div>
+    <? endif; ?>
 	<div class="b-catalog-detail_tabs-group">
 	
 		<div class="b-catalog-detail_tabs-container" id="<?=$arItemIDs['TABS_ID']?>">
