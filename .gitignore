@@ -1,7 +1,13 @@
+/bitrix/gadgets/
+/bitrix/images/
+/bitrix/js/
+/bitrix/activities/
+/bitrix/tools/
+/bitrix/panel/
 /backup.zip
-/bitrix/cache
-/bitrix/admin
-/bitrix/backup
+/bitrix/cache/
+/bitrix/admin/
+/bitrix/backup/
 /bitrix/blocks/
 /bitrix/components/bitrix/
 /bitrix/modules/
@@ -11,6 +17,7 @@
 /bitrix/updates
 /bitrix/php_interface/dbconn.php
 /upload
+/bitrix/templates/landing24/
 /awstats
 /bitrix/site_checker_2160552f19effc917a0c70dd6b4b08dc.log
 /bitrix/sounds/
@@ -20,3 +27,5 @@
 /bitrix/.settings.php
 alex_test.php
 bitrix/.settings.php
+.gitignore
+
